@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-using SilverSpy.DataAccess;
+using SilverSpy.Data;
 using SilverSpy.Models;
 
 namespace SilverSpy
@@ -30,10 +30,11 @@ namespace SilverSpy
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "SilverSpy", Version = "v1"}); });
-            services.AddDbContext<TransactionContext>(options =>
+            
+            services.AddDbContext<DataContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("LocalDatabase")));
-            services.AddScoped<IDataAccessProvider, DataAccessProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
