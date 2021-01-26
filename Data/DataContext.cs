@@ -14,7 +14,6 @@ namespace SilverSpy.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
-                .UseNpgsql("Server=127.0.0.1;port=5432;user id=postgres;password=postgres;database=silverspy_local;pooling=true")
                 .UseSnakeCaseNamingConvention();
     }
 }

@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SilverSpy.Data;
 using SilverSpy.Models;
 
@@ -16,13 +19,24 @@ namespace SilverSpy.Controllers
     {
         private readonly DataContext _context;
 
-        public PaymentsController(DataContext context)
+        public PaymentsController(DataContext context, IConfiguration configuration)
         {
             _context = context;
+            Configuration = configuration;
         }
 
+        public IConfiguration Configuration { get; set; }
+
         // GET: api/Payments
+        [HttpGet("test")]
+        public string Test()
+        {
+
+            return $"String:{this.User.FindFirst(ClaimTypes.NameIdentifier).Value}";
+    }
+
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Payment>>> GetPayments()
         {
             return await _context.Payments.ToListAsync();
