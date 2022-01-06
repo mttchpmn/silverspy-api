@@ -1,0 +1,35 @@
+version: "3.5"
+services:
+  db:
+    image: postgres:latest
+    container_name: "DATABASE"
+    networks:
+      - silverspy
+    environment:
+      POSTGRES_DB: "silverspy"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+
+#  api:
+#    container_name: "API"
+#    networks:
+#      - flattie
+#    build:
+#      context: .
+#      dockerfile: Api/Dockerfile
+#    environment:
+#      LOCAL_DB_CONNECTION_STRING: "Server=db;Port=5432;Database=flattie;User ID=postgres;Password=${DB_PASSWORD}"
+#    restart: on-failure
+#    ports:
+#      - "5000:80"
+#      - "5001:443"
+
+networks:
+  silverspy:
+    name: silverspy_network
+
+volumes:
+  db_data:
