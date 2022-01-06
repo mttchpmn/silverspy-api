@@ -15,4 +15,8 @@
       <ProjectReference Include="..\Utilities\Utilities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Include="MigrationScripts\001 - CreateTransactionTable.sql" />
+    </ItemGroup>
+
 </Project>

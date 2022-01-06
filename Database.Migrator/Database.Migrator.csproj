@@ -14,9 +14,6 @@
 
     <ItemGroup>
       <None Remove="Scripts\001 - CreateTransactionTable.sql" />
-      <EmbeddedResource Include="Scripts\001 - CreateTransactionTable.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
     </ItemGroup>
 
 </Project>
