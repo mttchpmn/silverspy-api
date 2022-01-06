@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transactions.Domain", "Tran
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transactions.Tests", "Transactions.Tests\Transactions.Tests.csproj", "{FAAD6365-67E7-4466-867B-9BBAEA427935}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.Migration", "Database.Migration\Database.Migration.csproj", "{435EFCB9-01B2-486E-824E-0F21416E2C5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.Migrator", "Database.Migrator\Database.Migrator.csproj", "{435EFCB9-01B2-486E-824E-0F21416E2C5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{B7A51FBF-5BAA-4277-970F-0ED91D9EF674}"
 EndProject
@@ -23,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Public", "Payments.Public\Payments.Public.csproj", "{CFCC9AE9-1632-458D-B992-B8754C07801D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{B8029507-AA74-4D27-A81E-A3D15B841A13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{DB5FB9D5-0A41-4894-ACD2-EEDFE2BE322D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{CFCC9AE9-1632-458D-B992-B8754C07801D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFCC9AE9-1632-458D-B992-B8754C07801D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFCC9AE9-1632-458D-B992-B8754C07801D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB5FB9D5-0A41-4894-ACD2-EEDFE2BE322D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB5FB9D5-0A41-4894-ACD2-EEDFE2BE322D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB5FB9D5-0A41-4894-ACD2-EEDFE2BE322D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB5FB9D5-0A41-4894-ACD2-EEDFE2BE322D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3D405E05-53B0-41EF-A499-ED4D85E300C0} = {D5F7FC49-91B9-4FF3-A43F-F798F26E4941}
