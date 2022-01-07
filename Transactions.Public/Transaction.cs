@@ -2,8 +2,8 @@
 
 public record Transaction(
     int Id,
-    int TransactionId,
-    DateTime Date,
+    string TransactionId,
+    DateTime TransactionDate,
     DateTime ProcessedDate,
     string Reference,
     string Description,
