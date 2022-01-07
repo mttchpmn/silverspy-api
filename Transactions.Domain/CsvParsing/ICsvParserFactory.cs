@@ -1,4 +1,4 @@
-﻿using Transactions.Domain.CsvParsers;
+﻿using Transactions.Domain.CsvParsing.Parsers;
 
 namespace Transactions.Domain;
 
@@ -11,12 +11,10 @@ public class CsvParserFactory : ICsvParserFactory
 {
     public ICsvParser GetParser(string bankType)
     {
-        switch (bankType)
+        return bankType switch
         {
-            case "ASB":
-                return new AsbCsvParser();
-            default:
-                throw new ArgumentOutOfRangeException(nameof(bankType), "Bank type not supported");
-        }
+            "ASB" => new AsbCsvParser(),
+            _ => throw new ArgumentOutOfRangeException(nameof(bankType), "Bank type not supported")
+        };
     }
 }
