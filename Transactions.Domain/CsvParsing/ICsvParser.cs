@@ -1,8 +1,6 @@
-﻿using Transactions.Public;
-
-namespace Transactions.Domain;
+﻿namespace Transactions.Domain.CsvParsing;
 
 public interface ICsvParser
 {
-    Task<IEnumerable<Transaction>> Parse(string csvData);
+    Task<IEnumerable<RawTransaction>> Parse(string csvData);
 }

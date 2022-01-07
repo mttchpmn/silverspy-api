@@ -6,12 +6,12 @@ namespace Transactions.Domain.CsvParsing.Parsers;
 
 public class AsbCsvParser : BaseCsvParser, ICsvParser
 {
-    public Task<IEnumerable<Transaction>> Parse(string csvData)
+    public Task<IEnumerable<RawTransaction>> Parse(string csvData)
     {
         var records = GetRecords<AsbTransaction>(csvData);
         var transactions = records.Select(ToTransaction).ToList();
 
-        return Task.FromResult((IEnumerable<Transaction>)transactions);
+        return Task.FromResult((IEnumerable<RawTransaction>)transactions);
     }
 
     protected override bool ShouldSkipRecord(ShouldSkipRecordArgs shouldSkipRecordArgs)
@@ -24,19 +24,16 @@ public class AsbCsvParser : BaseCsvParser, ICsvParser
                || firstCell.StartsWith("To");
     }
 
-    private Transaction ToTransaction(AsbTransaction asbTransaction)
+    private RawTransaction ToTransaction(AsbTransaction asbTransaction)
     {
-        return new Transaction(
-            0, // TODO - This should come from DB. Or just make nullable?
+        return new RawTransaction(
             asbTransaction.TransactionId,
             asbTransaction.TransactionDate,
             asbTransaction.ProcessedDate,
             asbTransaction.Reference,
             asbTransaction.Description,
             asbTransaction.Amount,
-            asbTransaction.Type,
-            "",
-            ""
+            asbTransaction.Type
         );
     }
 }

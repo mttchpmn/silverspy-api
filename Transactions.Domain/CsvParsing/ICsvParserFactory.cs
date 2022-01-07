@@ -1,4 +1,5 @@
-﻿using Transactions.Domain.CsvParsing.Parsers;
+﻿using Transactions.Domain.CsvParsing;
+using Transactions.Domain.CsvParsing.Parsers;
 
 namespace Transactions.Domain;
 
