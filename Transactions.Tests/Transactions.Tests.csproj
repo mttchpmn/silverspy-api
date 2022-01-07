@@ -22,6 +22,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Transactions.Domain\Transactions.Domain.csproj" />
+      <ProjectReference Include="..\Utilities\Utilities.csproj" />
     </ItemGroup>
 
 </Project>
