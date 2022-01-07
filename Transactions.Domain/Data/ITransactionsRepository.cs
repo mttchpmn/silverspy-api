@@ -4,5 +4,5 @@ namespace Transactions.Domain.Data;
 
 public interface ITransactionsRepository
 {
-   Task<IEnumerable<Transaction>> ImportTransactions(IEnumerable<RawTransaction> rawTransactions);
+   Task<IEnumerable<Transaction>> ImportTransactions(string authid, IEnumerable<RawTransaction> rawTransactions);
 }

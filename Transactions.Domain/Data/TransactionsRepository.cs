@@ -14,13 +14,14 @@ public class TransactionsRepository : ITransactionsRepository
         _databaseConnectionFactory = new DatabaseConnectionFactory("Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres");
     }
 
-    public async Task<IEnumerable<Transaction>> ImportTransactions(IEnumerable<RawTransaction> rawTransactions)
+    public async Task<IEnumerable<Transaction>> ImportTransactions(string authId,
+        IEnumerable<RawTransaction> rawTransactions)
     {
         var importedTransactionIds = new List<int>();
         
         foreach (var rawTransaction in rawTransactions)
         {
-            var id = await ImportTransaction(rawTransaction);
+            var id = await ImportTransaction(authId, rawTransaction);
             
             if (id != null)
                 importedTransactionIds.Add(id.Value);
@@ -31,7 +32,7 @@ public class TransactionsRepository : ITransactionsRepository
         return importedTransactions;
     }
 
-    private async Task<int?> ImportTransaction(RawTransaction transaction)
+    private async Task<int?> ImportTransaction(string authid, RawTransaction transaction)
     {
         try
         {
@@ -39,6 +40,7 @@ public class TransactionsRepository : ITransactionsRepository
 
             var sql =
                 @"INSERT INTO transaction (
+                         auth_id,
                          transaction_id, 
                          transaction_date, 
                          processed_date, 
@@ -47,6 +49,7 @@ public class TransactionsRepository : ITransactionsRepository
                          value, 
                          type) 
                 VALUES (
+                        @AuthId,
                         @TransactionId,
                         @TransactionDate,
                         @ProcessedDate,
@@ -56,7 +59,17 @@ public class TransactionsRepository : ITransactionsRepository
                         @Type)
                 RETURNING id";
 
-            var transactionId = await connection.ExecuteScalarAsync<int>(sql, transaction);
+            var transactionId = await connection.ExecuteScalarAsync<int>(sql, new
+            {
+                AuthId = authid, 
+                transaction.TransactionId,
+                transaction.TransactionDate,
+                transaction.ProcessedDate,
+                transaction.Reference,
+                transaction.Description,
+                transaction.Value,
+                transaction.Type,
+            });
 
             return transactionId;
         }

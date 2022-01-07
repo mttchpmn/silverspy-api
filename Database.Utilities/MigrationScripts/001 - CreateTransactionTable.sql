@@ -1,6 +1,7 @@
 CREATE TABLE transaction
 (
     id               SERIAL PRIMARY KEY,
+    auth_id        VARCHAR(255),
     transaction_id   VARCHAR(255) UNIQUE NOT NULL,
     transaction_date timestamptz,
     processed_date   timestamptz,

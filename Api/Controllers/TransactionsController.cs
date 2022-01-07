@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Transactions.Public;
 
@@ -19,7 +20,9 @@ public class TransactionsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Import(ImportTransactionsInput input)
     {
-        var result = await _transactionsService.ImportTransactions(input);
+        var authId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await _transactionsService.ImportTransactions(authId!, input);
+        
         return Ok(result);
     }
 }
