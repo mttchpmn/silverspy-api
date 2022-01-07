@@ -1,10 +1,12 @@
 ﻿namespace Transactions.Public;
 
-public record Transaction(int Id,
+public record Transaction(
+    int Id,
+    int TransactionId,
     DateTime Date,
     DateTime ProcessedDate,
     string Reference,
-    string Particulars,
+    string Description,
     decimal Value,
     TransactionType Type,
     string Category,
@@ -12,6 +14,6 @@ public record Transaction(int Id,
 
 public enum TransactionType
 {
-    Debit,
-    Credit
+    DEBIT,
+    CREDIT
 }

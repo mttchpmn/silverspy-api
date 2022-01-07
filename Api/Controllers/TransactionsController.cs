@@ -17,7 +17,7 @@ public class TransactionsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Import(ImportTransactionsInput input)
     {
-        // var result = await _transactionsService.ImportTransactions("TODO");
-        return Ok($"DATA: {input.CsvData}");
+        var result = await _transactionsService.ImportTransactions(input);
+        return Ok(result);
     }
 }

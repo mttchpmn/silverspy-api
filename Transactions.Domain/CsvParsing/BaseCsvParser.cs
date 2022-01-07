@@ -21,7 +21,7 @@ public abstract class BaseCsvParser
         using var reader = new StringReader(csvData);
         using var csv = new CsvReader(reader, _config);
 
-        return csv.GetRecords<T>();
+        return csv.GetRecords<T>().ToList();
     }
 
     protected abstract bool ShouldSkipRecord(ShouldSkipRecordArgs shouldSkipRecordArgs);

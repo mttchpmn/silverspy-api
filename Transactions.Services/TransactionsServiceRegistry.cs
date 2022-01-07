@@ -9,5 +9,6 @@ public static class TransactionsServiceRegistry
    public static void RegisterServices(IServiceCollection serviceCollection)
    {
       serviceCollection.AddScoped<ITransactionsService, TransactionsService>();
+      serviceCollection.AddScoped<ICsvParserFactory, CsvParserFactory>();
    }
 }
