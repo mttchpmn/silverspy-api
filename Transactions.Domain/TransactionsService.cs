@@ -4,8 +4,17 @@ namespace Transactions.Domain;
 
 public class TransactionsService : ITransactionsService
 {
-    public Task<IEnumerable<Transaction>> ImportTransactions(string transactionsCsvString)
+    private readonly ICsvParserFactory _csvParserFactory;
+
+    public TransactionsService(ICsvParserFactory csvParserFactory)
     {
-        throw new NotImplementedException();
+        _csvParserFactory = csvParserFactory;
+    }
+    public Task<IEnumerable<Transaction>> ImportTransactions(ImportTransactionsInput input)
+    {
+        var parser = _csvParserFactory.GetParser(input.BankType);
+        var transactions = parser.Parse(input.CsvData);
+
+        return transactions;
     }
 }

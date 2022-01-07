@@ -2,5 +2,5 @@
 
 public interface ITransactionsService
 {
-   Task<IEnumerable<Transaction>> ImportTransactions(string transactionsCsvString);
+   Task<IEnumerable<Transaction>> ImportTransactions(ImportTransactionsInput input);
 }
