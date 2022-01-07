@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Transactions.Public;
 
 namespace Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public class TransactionsController : ControllerBase
 {
