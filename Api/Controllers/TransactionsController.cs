@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Transactions.Public;
 
 namespace Api.Controllers;
 
@@ -6,9 +7,17 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class TransactionsController : ControllerBase
 {
-    [HttpPost]
-    public IActionResult Import()
+    private readonly ITransactionsService _transactionsService;
+
+    public TransactionsController(ITransactionsService transactionsService)
     {
-        return Ok("Imported successfully");
+        _transactionsService = transactionsService;
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Import(ImportTransactionsInput input)
+    {
+        // var result = await _transactionsService.ImportTransactions("TODO");
+        return Ok($"DATA: {input.CsvData}");
     }
 }
