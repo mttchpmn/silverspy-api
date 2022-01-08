@@ -25,4 +25,13 @@ public class TransactionsController : ControllerBase
         
         return Ok(result);
     }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetTransactions()
+    {
+        var authId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var result = await _transactionsService.GetTransactions(authId!);
+        
+        return Ok(result);
+    }
 }

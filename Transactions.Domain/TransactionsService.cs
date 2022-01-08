@@ -22,4 +22,9 @@ public class TransactionsService : ITransactionsService
 
         return importedTransactions;
     }
+
+    public Task<IEnumerable<Transaction>> GetTransactions(string authId)
+    {
+        return _transactionsRepository.GetTransactions(authId);
+    }
 }

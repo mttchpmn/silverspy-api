@@ -34,6 +34,21 @@ public class TransactionsRepository : ITransactionsRepository
         return importedTransactions;
     }
 
+    public async Task<IEnumerable<Transaction>> GetTransactions(string authId)
+    {
+        await using var connection = await _databaseConnectionFactory.GetConnection();
+
+        var sql = @"SELECT id, transaction_id, transaction_date, processed_date, reference, description, value, type, category, details
+                    FROM transaction
+                    WHERE auth_id = @AuthId";
+
+        var records = await connection.QueryAsync<TransactionRecord>(sql, new {AuthId = authId});
+
+        var result = records.Select(x => x.ToTransaction()).ToList();
+
+        return result;
+    }
+
     private async Task<int?> ImportTransaction(string authid, RawTransaction transaction)
     {
         try
