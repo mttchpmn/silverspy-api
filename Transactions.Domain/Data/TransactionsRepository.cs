@@ -11,24 +11,26 @@ public class TransactionsRepository : ITransactionsRepository
 
     public TransactionsRepository()
     {
-        _databaseConnectionFactory = new DatabaseConnectionFactory("Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres");
+        _databaseConnectionFactory =
+            new DatabaseConnectionFactory(
+                "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres");
     }
 
     public async Task<IEnumerable<Transaction>> ImportTransactions(string authId,
         IEnumerable<RawTransaction> rawTransactions)
     {
         var importedTransactionIds = new List<int>();
-        
+
         foreach (var rawTransaction in rawTransactions)
         {
             var id = await ImportTransaction(authId, rawTransaction);
-            
+
             if (id != null)
                 importedTransactionIds.Add(id.Value);
         }
 
         var importedTransactions = await GetTransactionsForIds(importedTransactionIds);
-        
+
         return importedTransactions;
     }
 
@@ -61,7 +63,7 @@ public class TransactionsRepository : ITransactionsRepository
 
             var transactionId = await connection.ExecuteScalarAsync<int>(sql, new
             {
-                AuthId = authid, 
+                AuthId = authid,
                 transaction.TransactionId,
                 transaction.TransactionDate,
                 transaction.ProcessedDate,
@@ -87,15 +89,16 @@ public class TransactionsRepository : ITransactionsRepository
 
     private async Task<IEnumerable<Transaction>> GetTransactionsForIds(IEnumerable<int> transactionIds)
     {
-            // await using var connection = await _databaseConnectionFactory.GetConnection();
-            //
-            // var sql =
-            //     @"SELECT id, transaction_id, transaction_date, processed_date, reference, description, type, value FROM transaction WHERE id = ANY(@TransactionIds)";
-            //
-            // var records = (await connection.QueryAsync<TransactionRecord>(sql, transactionIds.ToList())).ToList();
-            //
-            // return records.Select(x => x.ToTransaction()).ToList();
+        await using var connection = await _databaseConnectionFactory.GetConnection();
 
-            return new List<Transaction>();
+        var sql = @"SELECT id, transaction_id, transaction_date, processed_date, reference, description, type, value 
+                    FROM transaction 
+                    WHERE id = ANY(@TransactionIds)";
+
+        var records =
+            (await connection.QueryAsync<TransactionRecord>(sql, new {TransactionIds = transactionIds.ToList()}))
+            .ToList();
+
+        return records.Select(x => x.ToTransaction()).ToList();
     }
 }
