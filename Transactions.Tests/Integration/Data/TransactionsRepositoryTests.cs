@@ -56,6 +56,43 @@ public class TransactionsRepositoryTests
             Assert.Empty(importedTransactions);
         }
 
+    }
+
+    public class GetTransactions : TransactionsRepositoryTests
+    {
+        [Fact]
+        public async Task Can_get_transactions()
+        {
+            var input = GetInput();
+            await _transactionsRepository.ImportTransactions(_authId, input);
+
+            var transactions = (await _transactionsRepository.GetTransactions(_authId)).ToList();
+
+            var transactionOne = transactions[0];
+            var transactionTwo = transactions[1];
+
+            Assert.Equal(2, transactions.Count());
+
+            Assert.Equal("Groceries", transactionOne.Description);
+            Assert.Equal(159.50M, transactionOne.Value);
+            Assert.Equal("111", transactionOne.TransactionId);
+
+            Assert.Equal("Beers", transactionTwo.Description);
+            Assert.Equal(49.50M, transactionTwo.Value);
+            Assert.Equal("222", transactionTwo.TransactionId);
+        }
+
+        [Fact]
+        public async Task Only_transactions_for_user_are_returned()
+        {
+            var input = GetInput();
+            await _transactionsRepository.ImportTransactions(_authId, input);
+
+            var transactions = (await _transactionsRepository.GetTransactions(_authId)).ToList();
+            
+            Assert.True(transactions.All(x => x.AuthId.Equals(_authId)));
+        }
+    }
         private static List<RawTransaction> GetInput()
         {
             return new List<RawTransaction>()
@@ -79,26 +116,4 @@ public class TransactionsRepositoryTests
                     TransactionType.DEBIT),
             };
         }
-    }
-
-    public class GetTransactions : TransactionsRepositoryTests
-    {
-        [Fact]
-        public void Can_get_transactions()
-        {
-        }
-    }
-
-    private string GetInput()
-    {
-        return @"Created date / time : 30 December 2021 / 15:37:34
-Card Number 4617-5500-4153-9108 (Visa Platinum Rewards)
-From date 20211221
-To date 20211230
-Date Processed,Date of Transaction,Unique Id,Tran Type,Reference,Description,Amount
-
-2021/12/01,2021/12/01,2021120101,CREDIT,9108,""Groceries"",-250.65
-2021/12/01,2021/12/01,2021120101,CREDIT,9108,""Beers"",-35.99
-";
-    }
 }

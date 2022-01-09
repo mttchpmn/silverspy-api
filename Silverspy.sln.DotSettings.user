@@ -20,5 +20,8 @@
     &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.CsvParsing.CsvParserFactoryTests.AsbCsvParser_is_returned_for_asb_bankType&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Data.TransactionsRepositoryTests+ImportTransactions.Can_import_transactions&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Integration.Data.TransactionsRepositoryTests+ImportTransactions.Can_import_transactions&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Integration.Data.TransactionsRepositoryTests+ImportTransactions.Duplicate_transactions_are_not_reimported&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Integration.Data.TransactionsRepositoryTests+GetTransactions.Can_get_transactions&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Integration.Data.TransactionsRepositoryTests+GetTransactions.Only_transactions_for_user_are_returned&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

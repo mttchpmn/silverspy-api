@@ -2,6 +2,7 @@
 
 public record Transaction(
     int Id,
+    string AuthId,
     string TransactionId,
     DateTime TransactionDate,
     DateTime ProcessedDate,

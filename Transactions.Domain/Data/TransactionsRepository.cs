@@ -38,7 +38,7 @@ public class TransactionsRepository : ITransactionsRepository
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
-        var sql = @"SELECT id, transaction_id, transaction_date, processed_date, reference, description, value, type, category, details
+        var sql = @"SELECT id, auth_id, transaction_id, transaction_date, processed_date, reference, description, value, type, category, details
                     FROM transaction
                     WHERE auth_id = @AuthId";
 
