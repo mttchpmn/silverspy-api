@@ -14,6 +14,7 @@ namespace Transactions.Tests.Integration.Data;
 public class TransactionsRepositoryTests
 {
     private readonly TransactionsRepository _transactionsRepository;
+    private readonly string _authId = "test|1234";
 
     public TransactionsRepositoryTests()
     {
@@ -27,11 +28,32 @@ public class TransactionsRepositoryTests
         {
             var input = GetInput();
 
-            var authId = "test|1234";
+            var importedTransactions = (await _transactionsRepository.ImportTransactions(_authId, input)).ToList();
 
-            var importedTransactions = await _transactionsRepository.ImportTransactions(authId, input);
-            
+            var transactionOne = importedTransactions[0];
+            var transactionTwo = importedTransactions[1];
+
             Assert.Equal(2, importedTransactions.Count());
+
+            Assert.Equal("Groceries", transactionOne.Description);
+            Assert.Equal(159.50M, transactionOne.Value);
+            Assert.Equal("111", transactionOne.TransactionId);
+
+            Assert.Equal("Beers", transactionTwo.Description);
+            Assert.Equal(49.50M, transactionTwo.Value);
+            Assert.Equal("222", transactionTwo.TransactionId);
+        }
+
+        [Fact]
+        public async Task Duplicate_transactions_are_not_reimported()
+        {
+            var input = GetInput();
+
+            await _transactionsRepository.ImportTransactions(_authId, input);
+
+            var importedTransactions = await _transactionsRepository.ImportTransactions(_authId, input);
+            
+            Assert.Empty(importedTransactions);
         }
 
         private static List<RawTransaction> GetInput()
@@ -46,7 +68,7 @@ public class TransactionsRepositoryTests
                     "Groceries",
                     159.50M,
                     TransactionType.DEBIT),
-                
+
                 new RawTransaction(
                     222,
                     DateTime.UnixEpoch,
