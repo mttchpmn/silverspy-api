@@ -9,11 +9,11 @@ public class TransactionsRepository : ITransactionsRepository
 {
     private readonly DatabaseConnectionFactory _databaseConnectionFactory;
 
-    public TransactionsRepository()
+    public TransactionsRepository(DatabaseConnectionFactory databaseConnectionFactory)
     {
-        _databaseConnectionFactory =
-            new DatabaseConnectionFactory(
-                "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres");
+        _databaseConnectionFactory = databaseConnectionFactory;
+            // new DatabaseConnectionFactory(
+            //     "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres");
     }
 
     public async Task<IEnumerable<Transaction>> ImportTransactions(string authId,

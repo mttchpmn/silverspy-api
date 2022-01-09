@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Test.Utilities\Test.Utilities.csproj" />
       <ProjectReference Include="..\Transactions.Domain\Transactions.Domain.csproj" />
       <ProjectReference Include="..\Utilities\Utilities.csproj" />
     </ItemGroup>

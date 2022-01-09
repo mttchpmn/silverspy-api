@@ -1,14 +1,24 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1a7a5c97_002Da9cf_002D435f_002D91f6_002Dccff263debad/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="AsbCsvParser_is_returned_for_asb_bankType" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1a7a5c97_002Da9cf_002D435f_002D91f6_002Dccff263debad/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AsbCsvParser_is_returned_for_asb_bankType" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.CsvParsing.CsvParserFactoryTests.AsbCsvParser_is_returned_for_asb_bankType&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.CsvParsing.CsvParserFactoryTests.ArgumentOutOfRangeException_is_thrown_for_unsupported_bank&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.CsvParsing.AsbCsvParserTests.Valid_input_is_parsed_into_list_of_transactions&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.CsvParsing.AsbCsvParserTests.InvalidInputException_thrown_for_bad_input&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Data.TransactionsRepositoryTests+ImportTransactions.Can_import_transactions&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4be7d34d_002D1763_002D4e05_002Db180_002D0bfdc9efd462/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AsbCsvParser_is_returned_for_asb_bankType #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.CsvParsing.CsvParserFactoryTests.AsbCsvParser_is_returned_for_asb_bankType&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Data.TransactionsRepositoryTests+ImportTransactions.Can_import_transactions&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Integration.Data.TransactionsRepositoryTests+ImportTransactions.Can_import_transactions&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5869ef52_002D766d_002D40d2_002Db00c_002D7f36b1c04465/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="AsbCsvParser_is_returned_for_asb_bankType #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.CsvParsing.CsvParserFactoryTests.AsbCsvParser_is_returned_for_asb_bankType&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Data.TransactionsRepositoryTests+ImportTransactions.Can_import_transactions&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::FAAD6365-67E7-4466-867B-9BBAEA427935::net6.0::Transactions.Tests.Integration.Data.TransactionsRepositoryTests+ImportTransactions.Can_import_transactions&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
