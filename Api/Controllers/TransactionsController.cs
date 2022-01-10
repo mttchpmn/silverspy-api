@@ -20,7 +20,7 @@ public class TransactionsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Import(ImportTransactionsInput input)
     {
-        var authId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var authId = GetAuthId();
         var result = await _transactionsService.ImportTransactions(authId!, input);
         
         return Ok(result);
@@ -29,9 +29,29 @@ public class TransactionsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetTransactions()
     {
-        var authId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var authId = GetAuthId();
         var result = await _transactionsService.GetTransactions(authId!);
         
         return Ok(result);
     }
+
+    [HttpPatch]
+    public async Task<IActionResult> UpdateTransaction(UpdateTransactionInput input)
+    {
+        var authId = GetAuthId();
+
+        var result = await _transactionsService.UpdateTransaction(authId, input);
+
+        return Ok(result);
+    }
+    
+    private string GetAuthId()
+    {
+        var authId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (authId == null)
+            throw new Exception("Auth ID is null");
+        
+        return authId;
+    }
+
 }

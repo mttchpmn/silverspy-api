@@ -27,4 +27,9 @@ public class TransactionsService : ITransactionsService
     {
         return _transactionsRepository.GetTransactions(authId);
     }
+
+    public Task<Transaction> UpdateTransaction(string authId, UpdateTransactionInput input)
+    {
+        return _transactionsRepository.UpdateTransaction(authId, input);
+    }
 }

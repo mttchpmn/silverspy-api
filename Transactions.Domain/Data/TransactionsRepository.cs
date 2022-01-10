@@ -12,8 +12,8 @@ public class TransactionsRepository : ITransactionsRepository
     public TransactionsRepository(DatabaseConnectionFactory databaseConnectionFactory)
     {
         _databaseConnectionFactory = databaseConnectionFactory;
-            // new DatabaseConnectionFactory(
-            //     "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres");
+        // new DatabaseConnectionFactory(
+        //     "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres");
     }
 
     public async Task<IEnumerable<Transaction>> ImportTransactions(string authId,
@@ -38,7 +38,8 @@ public class TransactionsRepository : ITransactionsRepository
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
-        var sql = @"SELECT id, auth_id, transaction_id, transaction_date, processed_date, reference, description, value, type, category, details
+        var sql =
+            @"SELECT id, auth_id, transaction_id, transaction_date, processed_date, reference, description, value, type, category, details
                     FROM transaction
                     WHERE auth_id = @AuthId";
 
@@ -47,6 +48,25 @@ public class TransactionsRepository : ITransactionsRepository
         var result = records.Select(x => x.ToTransaction()).ToList();
 
         return result;
+    }
+
+    public async Task<Transaction> UpdateTransaction(string authId, UpdateTransactionInput input)
+    {
+        await using var connection = await _databaseConnectionFactory.GetConnection();
+
+        var sql =
+            "UPDATE transaction SET category = @Category, details = @Details WHERE auth_id = @AuthId AND id = @TransactionId";
+
+        var affectedRows = await connection.ExecuteAsync(sql,
+            new
+            {
+                Category = input.Category, Details = input.Details, TransactionId = input.TransactionId, AuthId = authId
+            });
+        Console.WriteLine($"Affected rows: {affectedRows}");
+
+        var transaction = (await GetTransactionsForIds(new[] {input.TransactionId})).First();
+
+        return transaction;
     }
 
     private async Task<int?> ImportTransaction(string authid, RawTransaction transaction)
@@ -106,7 +126,7 @@ public class TransactionsRepository : ITransactionsRepository
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
-        var sql = @"SELECT id, transaction_id, transaction_date, processed_date, reference, description, type, value 
+        var sql = @"SELECT id, transaction_id, transaction_date, processed_date, reference, description, type, value, category, details 
                     FROM transaction 
                     WHERE id = ANY(@TransactionIds)";
 
