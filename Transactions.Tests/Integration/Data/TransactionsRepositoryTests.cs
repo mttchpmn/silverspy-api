@@ -52,10 +52,9 @@ public class TransactionsRepositoryTests
             await _transactionsRepository.ImportTransactions(_authId, input);
 
             var importedTransactions = await _transactionsRepository.ImportTransactions(_authId, input);
-            
+
             Assert.Empty(importedTransactions);
         }
-
     }
 
     public class GetTransactions : TransactionsRepositoryTests
@@ -89,31 +88,53 @@ public class TransactionsRepositoryTests
             await _transactionsRepository.ImportTransactions(_authId, input);
 
             var transactions = (await _transactionsRepository.GetTransactions(_authId)).ToList();
-            
+
             Assert.True(transactions.All(x => x.AuthId.Equals(_authId)));
         }
     }
-        private static List<RawTransaction> GetInput()
-        {
-            return new List<RawTransaction>()
-            {
-                new RawTransaction(
-                    111,
-                    DateTime.UnixEpoch,
-                    DateTime.UnixEpoch,
-                    "7605",
-                    "Groceries",
-                    159.50M,
-                    TransactionType.DEBIT),
 
-                new RawTransaction(
-                    222,
-                    DateTime.UnixEpoch,
-                    DateTime.UnixEpoch,
-                    "7605",
-                    "Beers",
-                    49.50M,
-                    TransactionType.DEBIT),
-            };
+    public class UpdateTransaction : TransactionsRepositoryTests
+    {
+        [Fact]
+        public async Task CanUpdateTransaction()
+        {
+            var input = GetInput();
+            var importedTransactions = await _transactionsRepository.ImportTransactions(_authId, input);
+            var transaction = importedTransactions.First();
+
+            var category = "Food and drink";
+            var details = "New World Weekly Shop";
+            var updateInput = new UpdateTransactionInput(transaction.Id, category, details);
+
+            var updatedTransaction = await _transactionsRepository.UpdateTransaction(_authId, updateInput);
+            
+            Assert.Equal(transaction.Id, updatedTransaction.Id);
+            Assert.Equal(category, updatedTransaction.Category);
+            Assert.Equal(details, updatedTransaction.Details);
         }
+    }
+    
+    private static List<RawTransaction> GetInput()
+    {
+        return new List<RawTransaction>()
+        {
+            new RawTransaction(
+                111,
+                DateTime.UnixEpoch,
+                DateTime.UnixEpoch,
+                "7605",
+                "Groceries",
+                159.50M,
+                TransactionType.DEBIT),
+
+            new RawTransaction(
+                222,
+                DateTime.UnixEpoch,
+                DateTime.UnixEpoch,
+                "7605",
+                "Beers",
+                49.50M,
+                TransactionType.DEBIT),
+        };
+    }
 }
