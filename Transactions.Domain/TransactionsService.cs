@@ -28,6 +28,11 @@ public class TransactionsService : ITransactionsService
         return _transactionsRepository.GetTransactions(authId);
     }
 
+    public async Task<IEnumerable<CategoryTotal>> GetCategoryTotals(string authId)
+    {
+        return await _transactionsRepository.GetCategoryTotals(authId);
+    }
+
     public Task<Transaction> UpdateTransaction(string authId, UpdateTransactionInput input)
     {
         return _transactionsRepository.UpdateTransaction(authId, input);

@@ -50,6 +50,19 @@ public class TransactionsRepository : ITransactionsRepository
         return result;
     }
 
+    public async Task<IEnumerable<CategoryTotal>> GetCategoryTotals(string authId)
+    {
+        await using var connection = await _databaseConnectionFactory.GetConnection();
+
+        var sql = "SELECT category, SUM(value) FROM transaction WHERE auth_id = @AuthId GROUP BY category";
+
+        var records = (await connection.QueryAsync<CategoryTotalRecord>(sql, new { AuthId = authId })).ToList();
+
+        var result = records.Select(x => x.ToCategoryTotal()).ToList();
+
+        return result;
+    }
+
     public async Task<Transaction> UpdateTransaction(string authId, UpdateTransactionInput input)
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
