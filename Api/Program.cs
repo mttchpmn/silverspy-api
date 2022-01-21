@@ -32,6 +32,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //             RequireClaim("scope", "todo:read-write"));
 //     });
 
+// Add CORS policies
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("_localDevelopment", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:3000"); // TODO - Update CORS domains
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,6 +48,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("_localDevelopment");
 }
 
 // Health check endpoint
