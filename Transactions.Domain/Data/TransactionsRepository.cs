@@ -54,6 +54,16 @@ public class TransactionsRepository : ITransactionsRepository
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
+        var existingTransaction = await connection.QuerySingleOrDefaultAsync<TransactionRecord>(
+            "SELECT id FROM transaction WHERE auth_id = @AuthId AND id = @TransactionId", new
+            {
+                AuthId = authId,
+                TransactionId = input.TransactionId
+            });
+
+        if (existingTransaction == null)
+            throw new Exception("Transaction not found"); // TODO - Handle with custom exception
+
         var sql =
             "UPDATE transaction SET category = @Category, details = @Details WHERE auth_id = @AuthId AND id = @TransactionId";
 
