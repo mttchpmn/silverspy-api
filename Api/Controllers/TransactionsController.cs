@@ -30,11 +30,10 @@ public class TransactionsController : ControllerBase
     public async Task<IActionResult> GetTransactions()
     {
         var authId = GetAuthId();
-        var transactions = await _transactionsService.GetTransactions(authId!);
-        var categoryTotals = await _transactionsService.GetCategoryTotals(authId);
+
+        var transactionData = await _transactionsService.GetTransactionData(authId);
         
-        
-        return Ok(new {transactions, categoryTotals});
+        return Ok(transactionData);
     }
 
     [HttpPatch]

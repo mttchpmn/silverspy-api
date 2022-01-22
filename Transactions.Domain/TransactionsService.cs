@@ -23,6 +23,14 @@ public class TransactionsService : ITransactionsService
         return importedTransactions;
     }
 
+    public async Task<TransactionData> GetTransactionData(string authId)
+    {
+        var transactions = await _transactionsRepository.GetTransactions(authId);
+        var categoryTotals = await _transactionsRepository.GetCategoryTotals(authId);
+
+        return new TransactionData(transactions, categoryTotals, 1000M, 1000M, 1000M);
+    }
+
     public Task<IEnumerable<Transaction>> GetTransactions(string authId)
     {
         return _transactionsRepository.GetTransactions(authId);
