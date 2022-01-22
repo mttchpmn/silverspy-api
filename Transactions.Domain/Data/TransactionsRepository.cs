@@ -92,6 +92,23 @@ public class TransactionsRepository : ITransactionsRepository
         return transaction;
     }
 
+    public async Task<TransactionTotals> GetTransactionTotals(string authId)
+    {
+        await using var connection = await _databaseConnectionFactory.GetConnection();
+
+        var sql = "SELECT type, SUM(value) FROM transaction WHERE auth_id = @AuthId GROUP BY type";
+
+        var records = (await connection.QueryAsync<TotalRecord>(sql, new { AuthId = authId })).ToList();
+
+        var incoming = records.Single(x => x.type.Equals(TransactionType.CREDIT));
+        var outgoing = records.Single(x => x.type.Equals(TransactionType.DEBIT));
+        var netPosition = incoming.sum - outgoing.sum;
+
+        return new TransactionTotals(incoming.sum, outgoing.sum, netPosition);
+    }
+
+    public record TotalRecord(TransactionType type, decimal sum);
+
     private async Task<int?> ImportTransaction(string authid, RawTransaction transaction)
     {
         try
