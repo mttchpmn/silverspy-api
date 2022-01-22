@@ -45,7 +45,7 @@ public class TransactionsRepository : ITransactionsRepository
 
         var records = await connection.QueryAsync<TransactionRecord>(sql, new {AuthId = authId});
 
-        var result = records.Select(x => x.ToTransaction()).ToList();
+        var result = records.Select(x => x.ToTransaction()).OrderBy(x => x.Id).ToList();
 
         return result;
     }
@@ -100,11 +100,11 @@ public class TransactionsRepository : ITransactionsRepository
 
         var records = (await connection.QueryAsync<TotalRecord>(sql, new { AuthId = authId })).ToList();
 
-        var incoming = records.Single(x => x.type.Equals(TransactionType.CREDIT));
-        var outgoing = records.Single(x => x.type.Equals(TransactionType.DEBIT));
-        var netPosition = incoming.sum - outgoing.sum;
+        var incoming = records.SingleOrDefault(x => x.type.Equals(TransactionType.CREDIT))?.sum ?? 0;
+        var outgoing = records.SingleOrDefault(x => x.type.Equals(TransactionType.DEBIT))?.sum ?? 0;
+        var netPosition = incoming - outgoing;
 
-        return new TransactionTotals(incoming.sum, outgoing.sum, netPosition);
+        return new TransactionTotals(incoming, outgoing, netPosition);
     }
 
     public record TotalRecord(TransactionType type, decimal sum);
