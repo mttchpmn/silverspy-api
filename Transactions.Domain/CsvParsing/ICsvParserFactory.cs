@@ -15,7 +15,7 @@ public class CsvParserFactory : ICsvParserFactory
         return bankType switch
         {
             "ASB" => new AsbCsvParser(),
-            _ => throw new ArgumentOutOfRangeException(nameof(bankType), "Bank type not supported")
+            _ => throw new ArgumentOutOfRangeException(nameof(bankType), $"Bank type: {bankType} not supported")
         };
     }
 }
