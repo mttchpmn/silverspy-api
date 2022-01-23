@@ -107,13 +107,104 @@ public class TransactionsRepositoryTests
             var updateInput = new UpdateTransactionInput(transaction.Id, category, details);
 
             var updatedTransaction = await _transactionsRepository.UpdateTransaction(_authId, updateInput);
-            
+
             Assert.Equal(transaction.Id, updatedTransaction.Id);
             Assert.Equal(category, updatedTransaction.Category);
             Assert.Equal(details, updatedTransaction.Details);
         }
     }
-    
+
+    public class GetCategoryTotals : TransactionsRepositoryTests
+    {
+        [Fact]
+        public async Task Can_get_category_totals()
+        {
+            var input = new List<RawTransaction>()
+            {
+                new RawTransaction(
+                    111,
+                    DateTime.UnixEpoch,
+                    DateTime.UnixEpoch,
+                    "7605",
+                    "Groceries",
+                    159.50M,
+                    TransactionType.DEBIT),
+                new RawTransaction(
+                    222,
+                    DateTime.UnixEpoch,
+                    DateTime.UnixEpoch,
+                    "7605",
+                    "Beers",
+                    49.50M,
+                    TransactionType.DEBIT),
+                new RawTransaction(
+                    333,
+                    DateTime.UnixEpoch,
+                    DateTime.UnixEpoch,
+                    "7605",
+                    "Misc",
+                    39.50M,
+                    TransactionType.DEBIT),
+            };
+            await _transactionsRepository.ImportTransactions(_authId, input);
+            await _transactionsRepository.UpdateTransaction(_authId, new UpdateTransactionInput(1, "Shopping", "Foo"));
+            await _transactionsRepository.UpdateTransaction(_authId, new UpdateTransactionInput(2, "Shopping", "Bar"));
+
+            var categoryTotals = (await _transactionsRepository.GetCategoryTotals(_authId)).ToList();
+
+
+            Assert.Equal(2, categoryTotals.Count);
+
+            var shopping = categoryTotals.First();
+            var other = categoryTotals[1];
+            
+            Assert.Equal(209M, shopping.Value);
+            Assert.Equal(39.5M, other.Value);
+        }
+    }
+
+    public class GetTransactionTotals : TransactionsRepositoryTests
+    {
+        [Fact]
+        public async Task Can_get_category_totals()
+        {
+            var input = new List<RawTransaction>()
+            {
+                new RawTransaction(
+                    111,
+                    DateTime.UnixEpoch,
+                    DateTime.UnixEpoch,
+                    "7605",
+                    "Groceries",
+                    159.50M,
+                    TransactionType.DEBIT),
+                new RawTransaction(
+                    222,
+                    DateTime.UnixEpoch,
+                    DateTime.UnixEpoch,
+                    "7605",
+                    "Beers",
+                    49.50M,
+                    TransactionType.DEBIT),
+                new RawTransaction(
+                    333,
+                    DateTime.UnixEpoch,
+                    DateTime.UnixEpoch,
+                    "7605",
+                    "Misc",
+                    39.50M,
+                    TransactionType.CREDIT),
+            };
+            await _transactionsRepository.ImportTransactions(_authId, input);
+
+            var totals = await _transactionsRepository.GetTransactionTotals(_authId);
+            
+            Assert.Equal(209M, totals.TotalOutgoing);
+            Assert.Equal(39.5M, totals.TotalIncoming);
+            Assert.Equal(39.5M - 209M, totals.NetPosition);
+        }
+    }
+
     private static List<RawTransaction> GetInput()
     {
         return new List<RawTransaction>()

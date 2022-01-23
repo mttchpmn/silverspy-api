@@ -25,6 +25,7 @@ public class TransactionsService : ITransactionsService
 
     public async Task<TransactionData> GetTransactionData(string authId)
     {
+        // TODO - Unit tests
         var transactions = await _transactionsRepository.GetTransactions(authId);
         var categoryTotals = await _transactionsRepository.GetCategoryTotals(authId);
         var totals = await _transactionsRepository.GetTransactionTotals(authId);
