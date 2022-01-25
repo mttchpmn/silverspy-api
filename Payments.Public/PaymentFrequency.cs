@@ -2,7 +2,6 @@
 
 public enum PaymentFrequency
 {
-    OneOff,
     Weekly,
     Fortnightly,
     Monthly,
