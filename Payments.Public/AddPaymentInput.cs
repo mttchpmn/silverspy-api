@@ -7,5 +7,5 @@ public record AddPaymentInput(
     string Name,
     string Category,
     string Details,
-    decimal Amount
+    decimal Value
 );

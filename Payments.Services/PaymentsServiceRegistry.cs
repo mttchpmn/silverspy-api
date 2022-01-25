@@ -10,6 +10,8 @@ public static class PaymentsServiceRegistry
    public static void RegisterServices(IServiceCollection serviceCollection)
    {
       serviceCollection.AddScoped<IPaymentsService, PaymentsService>();
+      serviceCollection.AddScoped<IPaymentsRepository, PaymentsRepository>();
+      
       RegisterDbConnectionFactory(serviceCollection);
    }
 

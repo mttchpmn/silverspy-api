@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <EmbeddedResource Include="MigrationScripts\001 - CreateTransactionTable.sql" />
+      <EmbeddedResource Include="MigrationScripts\002 - CreatePaymentTable.sql" />
     </ItemGroup>
 
 </Project>

@@ -19,10 +19,10 @@ public class PaymentsController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> AddPayment()
+    public async Task<IActionResult> AddPayment(AddPaymentInput input)
     {
         var authId = GetAuthId();
-        var result = "Add payment!";
+        var result = await _paymentsService.AddPayment(authId, input);
 
         return Ok(result);
     }

@@ -2,5 +2,5 @@
 
 public interface IPaymentsService
 {
-    Task<Payment> AddPayment(AddPaymentInput input);
+    Task<Payment> AddPayment(string authId, AddPaymentInput input);
 }
