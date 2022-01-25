@@ -1,9 +1,9 @@
 ﻿namespace Payments.Public;
 
 public record AddPaymentInput(
-    string ReferenceDate,
-    string Type,
-    string Frequency,
+    DateTime ReferenceDate,
+    PaymentType Type,
+    PaymentFrequency Frequency,
     string Name,
     string Category,
     string Details,

@@ -2,7 +2,6 @@ CREATE TABLE payment
 (
     id             SERIAL PRIMARY KEY,
     auth_id        VARCHAR(255) NOT NULL,
-    transaction_id VARCHAR(255) NOT NULL,
     reference_date timestamptz  NOT NULL,
     type           integer      NOT NULL,
     frequency      integer      NOT NULL,
