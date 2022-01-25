@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Payments.Public;
 using Transactions.Public;
 
 namespace Api.Controllers;
@@ -10,9 +11,11 @@ namespace Api.Controllers;
 [Route("[controller]")]
 public class PaymentsController : ControllerBase
 {
+    private readonly IPaymentsService _paymentsService;
 
-    public PaymentsController()
+    public PaymentsController(IPaymentsService paymentsService)
     {
+        _paymentsService = paymentsService;
     }
     
     [HttpPost]

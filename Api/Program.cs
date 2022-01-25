@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Payments.Services;
 using Transactions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddSwaggerGen();
 
 // Add domain service registries
 TransactionsServiceRegistry.RegisterServices(builder.Services);
+PaymentsServiceRegistry.RegisterServices(builder.Services);
 
 // Configure Auth0 Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
