@@ -3,5 +3,5 @@
 public interface IPaymentsService
 {
     Task<Payment> AddPayment(string authId, AddPaymentInput input);
-    Task<IEnumerable<PaymentWithDates>> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input);
+    Task<PaymentsSummary> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input);
 }

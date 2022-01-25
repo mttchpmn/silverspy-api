@@ -12,9 +12,20 @@ public record Payment(
     decimal Value
 );
 
-public record PaymentWithDates(Payment payment, IEnumerable<DateTime> PaymentDates) : Payment(payment.Id,
-    payment.AuthId, payment.ReferenceDate, payment.Type, payment.Frequency, payment.Name, payment.Category,
-    payment.Details, payment.Value)
+public record PaymentWithDates : Payment
 {
-    public IEnumerable<DateTime> PaymentDates { get; set; } = PaymentDates;
+    public PaymentWithDates(Payment payment, IEnumerable<DateTime> PaymentDates) : base(payment.Id,
+        payment.AuthId, payment.ReferenceDate, payment.Type, payment.Frequency, payment.Name, payment.Category,
+        payment.Details, payment.Value)
+    {
+        this.PaymentDates = PaymentDates;
+    }
+
+    public IEnumerable<DateTime> PaymentDates { get; init; }
+
+    public decimal GetTotalValue()
+    {
+        return Value * PaymentDates.Count();
+    }
+
 }

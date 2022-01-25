@@ -9,6 +9,8 @@ public static class PaymentExtensions
 
       while (referenceDate < endDate)
       {
+         result.Add(referenceDate);
+         
          referenceDate = payment.Frequency switch
          {
             PaymentFrequency.Weekly => referenceDate.AddDays(7),
@@ -18,11 +20,9 @@ public static class PaymentExtensions
             _ => referenceDate
          };
          
-         if (referenceDate >= startDate)
-            result.Add(referenceDate);
       }
 
-      return result;
+      return result.Where(x => x >= startDate);
    }
 
    public static PaymentWithDates ToPaymentWIthDates(this Payment payment, DateTime startDate, DateTime endDate)

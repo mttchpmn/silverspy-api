@@ -16,12 +16,14 @@ public class PaymentsService : IPaymentsService
         return await _paymentsRepository.AddPayment(authId, input);
     }
 
-    public async Task<IEnumerable<PaymentWithDates>> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input)
+    public async Task<PaymentsSummary> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input)
     {
         var payments = await _paymentsRepository.GetAllPayments(authId);
 
-        var result = payments.Select(x => x.ToPaymentWIthDates(input.StartDate, input.EndDate));
+        var paymentsWithDates = payments.Select(x => x.ToPaymentWIthDates(input.StartDate, input.EndDate)).ToList();
 
-        return result;
+        var totalOutgoing = paymentsWithDates.Sum(x => x.GetTotalValue());
+
+        return new PaymentsSummary(paymentsWithDates, totalOutgoing);
     }
 }
