@@ -15,4 +15,13 @@ public class PaymentsService : IPaymentsService
     {
         return await _paymentsRepository.AddPayment(authId, input);
     }
+
+    public async Task<IEnumerable<PaymentWithDates>> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input)
+    {
+        var payments = await _paymentsRepository.GetAllPayments(authId);
+
+        var result = payments.Select(x => x.ToPaymentWIthDates(input.StartDate, input.EndDate));
+
+        return result;
+    }
 }

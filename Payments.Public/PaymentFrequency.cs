@@ -2,8 +2,8 @@
 
 public enum PaymentFrequency
 {
-    Weekly,
-    Fortnightly,
-    Monthly,
+    Weekly, // 0
+    Fortnightly, // 1
+    Monthly, // 2
     Yearly
 }

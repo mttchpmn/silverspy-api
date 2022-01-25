@@ -24,4 +24,11 @@ public static class PaymentExtensions
 
       return result;
    }
+
+   public static PaymentWithDates ToPaymentWIthDates(this Payment payment, DateTime startDate, DateTime endDate)
+   {
+      var dates = payment.GenerateDates(startDate, endDate);
+
+      return new PaymentWithDates(payment, dates);
+   }
 }

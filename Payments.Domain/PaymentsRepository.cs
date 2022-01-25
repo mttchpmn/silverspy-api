@@ -56,6 +56,19 @@ public class PaymentsRepository : IPaymentsRepository
         return payment;
     }
 
+    public async Task<IEnumerable<Payment>> GetAllPayments(string authId)
+    {
+        await using var connection = await _databaseConnectionFactory.GetConnection();
+
+        var sql = "SELECT id, auth_id, reference_date, type, frequency, value, name, category, details FROM payment WHERE auth_id = @AuthId";
+
+        var payments =
+            (await connection.QueryAsync<PaymentRecord>(sql,
+                new { AuthId = authId })).ToList();
+
+        return payments.Select(x => x.ToPayment());
+    }
+
     private async Task<Payment> GetPaymentById(string authId, int paymentId)
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
