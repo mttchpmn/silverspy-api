@@ -2,7 +2,7 @@
 
 echo "Migrating Database..."
 
-docker-compose -f ../docker-compose.migrate.yml build migrate &&
-docker-compose -f ../docker-compose.migrate.yml run migrate
+docker-compose -f ../Database.Migrator/docker-compose.migrate.yml build migrate &&
+docker-compose -f ../Database.Migrator/docker-compose.migrate.yml run migrate
 
 echo "Done."
