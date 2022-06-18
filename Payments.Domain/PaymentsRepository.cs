@@ -43,19 +43,64 @@ public class PaymentsRepository : IPaymentsRepository
         {
             AuthId = authId,
             input.ReferenceDate,
-            Type = input.Type,
-            Frequency = input.Frequency,
-            Value = input.Value,
-            Name = input.Name,
-            Category = input.Category,
-            Details = input.Details
+            input.Type,
+            input.Frequency,
+            input.Value,
+            input.Name,
+            input.Category,
+            input.Details
         });
 
         var payment = await GetPaymentById(authId, paymentId);
 
         return payment;
     }
+    
+    public async Task<Payment> UpdatePayment(string authId, UpdatePaymentInput input)
+    {
+        await using var connection = await _databaseConnectionFactory.GetConnection();
 
+        var sql = @"UPDATE payment
+                    SET reference_date = @ReferenceDate,
+                        type = @Type,
+                        frequency = @Frequency,
+                        value = @Value,
+                        name = @Name,
+                        category = @Category
+                        details = @Details
+                    WHERE id = @PaymentId AND auth_id = @AuthId";
+
+        await connection.ExecuteAsync(sql, new
+        {
+            AuthId = authId,
+            input.PaymentId,
+            input.ReferenceDate,
+            input.Type,
+            input.Frequency,
+            input.Value,
+            input.Name,
+            input.Category,
+            input.Details
+        });
+
+        var payment = await GetPaymentById(authId, input.PaymentId);
+
+        return payment;
+    }
+
+    public async Task DeletePayment(string authId, int paymentId)
+    {
+        await using var connection = await _databaseConnectionFactory.GetConnection();
+
+        var sql = @"DELETE FROM payment WHERE auth_id = @AuthId AND id = @PaymentId";
+
+        await connection.ExecuteAsync(sql, new
+        {
+            AuthId = authId,
+            PaymentId = paymentId
+        });
+    }
+    
     public async Task<IEnumerable<Payment>> GetAllPayments(string authId)
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();

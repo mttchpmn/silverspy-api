@@ -16,6 +16,16 @@ public class PaymentsService : IPaymentsService
         return await _paymentsRepository.AddPayment(authId, input);
     }
 
+    public async Task<Payment> UpdatePayment(string authId, UpdatePaymentInput input)
+    {
+        return await _paymentsRepository.UpdatePayment(authId, input);
+    }
+
+    public async Task DeletePayment(string authId, int paymentId)
+    {
+        await _paymentsRepository.DeletePayment(authId, paymentId);
+    }
+
     public async Task<PaymentsSummary> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input)
     {
         var payments = await _paymentsRepository.GetAllPayments(authId);
