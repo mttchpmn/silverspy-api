@@ -47,21 +47,21 @@ public class PaymentsController : ControllerBase
     }
     
     [HttpPut]
-    public async Task<IActionResult> UpdatePayment()
+    public async Task<IActionResult> UpdatePayment(UpdatePaymentInput input)
     {
         var authId = GetAuthId();
-        var result = "Update payment!";
+        var result = await _paymentsService.UpdatePayment(authId, input);
 
         return Ok(result);
     }
     
     [HttpDelete]
-    public async Task<IActionResult> DeletePayment()
+    public async Task<IActionResult> DeletePayment(DeletePaymentInput input)
     {
         var authId = GetAuthId();
-        var result = "Delete payment!";
+        await _paymentsService.DeletePayment(authId, input.PaymentId);
 
-        return Ok(result);
+        return Ok("Payment deleted");
     }
     private string GetAuthId()
     {
@@ -73,3 +73,5 @@ public class PaymentsController : ControllerBase
     }
 
 }
+
+public record DeletePaymentInput(int PaymentId);
