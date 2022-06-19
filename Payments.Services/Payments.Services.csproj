@@ -5,19 +5,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
+    
     <ItemGroup>
-      <PackageReference Include="dbup" Version="4.5.0" />
-      <PackageReference Include="dbup-postgresql" Version="4.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Payments.Domain\Payments.Domain.csproj" />
+      <ProjectReference Include="..\Payments.Public\Payments.Public.csproj" />
       <ProjectReference Include="..\Utilities\Utilities.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Include="MigrationScripts\001 - CreateTransactionTable.sql" />
-      <EmbeddedResource Include="MigrationScripts\002 - CreatePaymentTable.sql" />
     </ItemGroup>
 
 </Project>
