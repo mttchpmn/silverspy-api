@@ -16,6 +16,11 @@ public class PaymentsService : IPaymentsService
         return await _paymentsRepository.AddPayment(authId, input);
     }
 
+    public async Task<Payment?> GetPaymentById(string authId, int paymentId)
+    {
+        return await _paymentsRepository.GetPaymentById(authId, paymentId);
+    }
+
     public async Task<Payment> UpdatePayment(string authId, UpdatePaymentInput input)
     {
         return await _paymentsRepository.UpdatePayment(authId, input);

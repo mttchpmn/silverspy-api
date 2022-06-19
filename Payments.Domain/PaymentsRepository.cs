@@ -66,7 +66,7 @@ public class PaymentsRepository : IPaymentsRepository
                         frequency = @Frequency,
                         value = @Value,
                         name = @Name,
-                        category = @Category
+                        category = @Category,
                         details = @Details
                     WHERE id = @PaymentId AND auth_id = @AuthId";
 
@@ -114,7 +114,7 @@ public class PaymentsRepository : IPaymentsRepository
         return payments.Select(x => x.ToPayment());
     }
 
-    private async Task<Payment> GetPaymentById(string authId, int paymentId)
+    public async Task<Payment?> GetPaymentById(string authId, int paymentId)
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
@@ -124,7 +124,7 @@ public class PaymentsRepository : IPaymentsRepository
             await connection.QuerySingleOrDefaultAsync<PaymentRecord>(sql,
                 new { PaymentId = paymentId, AuthId = authId });
 
-        return payment.ToPayment();
+        return payment?.ToPayment();
     }
 }
 

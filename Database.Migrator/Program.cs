@@ -6,14 +6,14 @@ namespace Database
     {
         static int Main(string[] args)
         {
-            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+            // var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+            var connectionString = "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres";
             if (connectionString == null)
             {
                 Console.Error.WriteLine("DB_CONNECTION_STRING env variable not set.");
                 return 1;
             }
             Console.WriteLine($"Connecting to DB: {connectionString}");
-            // var connectionString = "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres";
             
             var databaseMigrator = new DatabaseHelper(connectionString);
             var result = databaseMigrator.MigrateDatabase(connectionString);
