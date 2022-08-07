@@ -31,6 +31,11 @@ public class PaymentsService : IPaymentsService
         await _paymentsRepository.DeletePayment(authId, paymentId);
     }
 
+    public async Task<IEnumerable<Payment>> GetPayments(string authId)
+    {
+        return await _paymentsRepository.GetAllPayments(authId);
+    }
+
     public async Task<PaymentsSummary> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input)
     {
         var payments = await _paymentsRepository.GetAllPayments(authId);
