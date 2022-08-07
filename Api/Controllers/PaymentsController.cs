@@ -31,33 +31,7 @@ public class PaymentsController : ControllerBase
     public async Task<IActionResult> GetAllPayments()
     {
         var authId = GetAuthId();
-        var payments = (await _paymentsService.GetPayments(authId)).Select(x => x.ToApiPayment());
-
-        var result = new
-        {
-            Payments = payments,
-            MonthlyIncoming = new
-            {
-                Count = 1,
-                Total = 7950.54M 
-            },
-            MonthlyOutgoing = new
-            {
-                Count = 8,
-                Total = 3568M 
-            },
-            MonthlyNet = new
-            {
-                Count = 9,
-                Total = 4402.54M
-            },
-            CategoryTotals = new List<object>
-            {
-                new {Category = "FIXED_COSTS", Total = 3568M},
-                new {Category = "INCOME", Total = 7950.54M},
-            }
-            
-        };
+        var result = await _paymentsService.GetPayments(authId);
 
         return Ok(result);
     }

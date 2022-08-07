@@ -31,9 +31,23 @@ public class PaymentsService : IPaymentsService
         await _paymentsRepository.DeletePayment(authId, paymentId);
     }
 
-    public async Task<IEnumerable<Payment>> GetPayments(string authId)
+    public async Task<PaymentsResponse> GetPayments(string authId)
     {
-        return await _paymentsRepository.GetAllPayments(authId);
+        var allPayments =  (await _paymentsRepository.GetAllPayments(authId)).ToList();
+        
+        // TODO - Handle calculations correctly. Normalise to actual monthly costs
+
+        var monthlyIn = new Summary(1, 7950.54M);
+        var monthlyOut = new Summary(8, 3568M);
+        var monthlyNet = new Summary(9, 4402.54M);
+
+        var categoryTotals = new List<CategoryTotal>
+        {
+            new CategoryTotal("INCOME", 7950.54M),
+            new CategoryTotal("FIXED_COSTS", 3568M),
+        };
+        
+        return new PaymentsResponse(allPayments, monthlyIn, monthlyOut, monthlyNet, categoryTotals);
     }
 
     public async Task<PaymentsSummary> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input)
