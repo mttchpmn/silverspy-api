@@ -33,7 +33,7 @@ public class PaymentsService : IPaymentsService
 
     public async Task<PaymentsResponse> GetPayments(string authId)
     {
-        var allPayments =  (await _paymentsRepository.GetAllPayments(authId)).ToList();
+        var allPayments =  (await _paymentsRepository.GetAllPayments(authId)).Select(x => x.ToApiPayment()).ToList();
         
         // TODO - Handle calculations correctly. Normalise to actual monthly costs
 
@@ -59,5 +59,25 @@ public class PaymentsService : IPaymentsService
         var totalOutgoing = paymentsWithDates.Sum(x => x.GetTotalValue());
 
         return new PaymentsSummary(paymentsWithDates, totalOutgoing);
+    }
+
+    public async Task<PaymentsPeriod> GetPaymentsPeriod(string authId, GetPaymentsSummaryInput input)
+    {
+        var payments = await _paymentsRepository.GetAllPayments(authId);
+
+        var result = new List<PaymentWithDate>();
+
+        foreach (var payment in payments)
+        {
+            var dates = payment.GenerateDates(input.StartDate, input.EndDate).ToList();
+
+            var mapped = dates.Select(x => new PaymentWithDate(payment, x)).ToList();
+            
+            result.AddRange(mapped);
+        }
+        
+        result.Sort((x, y) => DateTime.Compare(x.PaymentDate, y.PaymentDate));
+
+        return new PaymentsPeriod(result);
     }
 }

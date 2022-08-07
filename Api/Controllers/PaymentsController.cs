@@ -36,12 +36,22 @@ public class PaymentsController : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet]
+    [HttpPost]
     [Route("summary")]
     public async Task<IActionResult> GetPaymentSummary(GetPaymentsSummaryInput input)
     {
         var authId = GetAuthId();
         var result = await _paymentsService.GetPaymentsSummary(authId, input);
+
+        return Ok(result);
+    }
+    
+    [HttpPost]
+    [Route("period")]
+    public async Task<IActionResult> GetPaymentPeriod(GetPaymentsSummaryInput input)
+    {
+        var authId = GetAuthId();
+        var result = await _paymentsService.GetPaymentsPeriod(authId, input);
 
         return Ok(result);
     }

@@ -12,6 +12,18 @@ public record Payment(
     decimal Value
 );
 
+public record PaymentWithDate : Payment
+{
+    public PaymentWithDate(Payment payment, DateTime paymentDate) : base(payment.Id,
+        payment.AuthId, payment.ReferenceDate, payment.Type, payment.Frequency, payment.Name, payment.Category,
+        payment.Details, payment.Value)
+    {
+        this.PaymentDate = paymentDate;
+    }
+
+    public DateTime PaymentDate { get; init; }
+}
+
 public record PaymentWithDates : Payment
 {
     public PaymentWithDates(Payment payment, IEnumerable<DateTime> PaymentDates) : base(payment.Id,
@@ -27,5 +39,4 @@ public record PaymentWithDates : Payment
     {
         return Value * PaymentDates.Count();
     }
-
 }
