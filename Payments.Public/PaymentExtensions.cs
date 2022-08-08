@@ -34,7 +34,9 @@ public static class PaymentExtensions
     }
 
     public static ApiPayment ToApiPayment(this Payment payment)
-        => new ApiPayment(
-            payment.Name, payment.ReferenceDate.ToString(CultureInfo.InvariantCulture), payment.Type.ToString(), payment.Frequency.ToString(),
+        => new(
+            payment.Id,
+            payment.Name, payment.ReferenceDate.ToString(CultureInfo.InvariantCulture), payment.Type.ToString(),
+            payment.Frequency.ToString(),
             payment.Category, payment.Details, payment.Value);
 }

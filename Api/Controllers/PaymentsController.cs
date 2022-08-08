@@ -57,10 +57,10 @@ public class PaymentsController : ControllerBase
     }
     
     [HttpPut]
-    public async Task<IActionResult> UpdatePayment(UpdatePaymentInput input)
+    public async Task<IActionResult> UpdatePayment(ApiUpdatePaymentInput input)
     {
         var authId = GetAuthId();
-        var result = await _paymentsService.UpdatePayment(authId, input);
+        var result = await _paymentsService.UpdatePayment(authId, input.ToUpdatePaymentInput());
 
         return Ok(result);
     }
