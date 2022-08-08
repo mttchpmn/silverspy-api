@@ -10,7 +10,7 @@ public class PaymentsService : IPaymentsService
     {
         _paymentsRepository = paymentsRepository;
     }
-    
+
     public async Task<Payment> AddPayment(string authId, AddPaymentInput input)
     {
         return await _paymentsRepository.AddPayment(authId, input);
@@ -33,21 +33,30 @@ public class PaymentsService : IPaymentsService
 
     public async Task<PaymentsResponse> GetPayments(string authId)
     {
-        var allPayments =  (await _paymentsRepository.GetAllPayments(authId)).Select(x => x.ToApiPayment()).ToList();
-        
+        var allPayments = (await _paymentsRepository.GetAllPayments(authId)).ToList();
+        var apiPayments = allPayments.Select(x => x.ToApiPayment()).ToList();
+
         // TODO - Handle calculations correctly. Normalise to actual monthly costs
+        var monthlyIn = allPayments.Where(x => x.Type.Equals(PaymentType.Incoming)).ToList();
+        var monthlyOut = allPayments.Where(x => x.Type.Equals(PaymentType.Outgoing)).ToList();
 
-        var monthlyIn = new Summary(1, 7950.54M);
-        var monthlyOut = new Summary(8, 3568M);
-        var monthlyNet = new Summary(9, 4402.54M);
+        var monthlyInTotal = monthlyIn.Sum(x => x.GetMonthlyCost());
+        var monthlyOutTotal = monthlyOut.Sum(x => x.GetMonthlyCost());
 
-        var categoryTotals = new List<CategoryTotal>
-        {
-            new CategoryTotal("INCOME", 7950.54M),
-            new CategoryTotal("FIXED_COSTS", 3568M),
-        };
-        
-        return new PaymentsResponse(allPayments, monthlyIn, monthlyOut, monthlyNet, categoryTotals);
+
+        var monthlyInSummary = new Summary(monthlyIn.Count, monthlyInTotal);
+        var monthlyOutSummary = new Summary(monthlyOut.Count, monthlyOutTotal);
+        var monthlyNetSummary = new Summary(monthlyIn.Count + monthlyOut.Count, monthlyInTotal - monthlyOutTotal);
+
+        var categories = apiPayments.Select(x => x.Category).Distinct().ToList();
+
+        var categoryTotals = categories
+            .Select(x => new CategoryTotal(x,
+                allPayments.Where(y => y.Category.ToString().ToUpper().Equals(x)).Sum(y => y.GetMonthlyCost())))
+            .ToList();
+
+        return new PaymentsResponse(apiPayments, monthlyInSummary, monthlyOutSummary, monthlyNetSummary,
+            categoryTotals);
     }
 
     public async Task<PaymentsSummary> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input)
@@ -72,10 +81,10 @@ public class PaymentsService : IPaymentsService
             var dates = payment.GenerateDates(input.StartDate, input.EndDate).ToList();
 
             var mapped = dates.Select(x => new PaymentWithDate(payment, x)).ToList();
-            
+
             result.AddRange(mapped);
         }
-        
+
         result.Sort((x, y) => DateTime.Compare(x.PaymentDate, y.PaymentDate));
 
         return new PaymentsPeriod(result);

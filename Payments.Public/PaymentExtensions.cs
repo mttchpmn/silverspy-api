@@ -26,6 +26,18 @@ public static class PaymentExtensions
         return result.Where(x => x >= startDate);
     }
 
+    public static decimal GetMonthlyCost(this Payment payment)
+    {
+        return payment.Frequency switch
+        {
+            PaymentFrequency.Weekly => payment.Value * 4.3M,
+            PaymentFrequency.Fortnightly => payment.Value * 2M,
+            PaymentFrequency.Monthly => payment.Value,
+            PaymentFrequency.Yearly => payment.Value / 12M,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
+
     public static PaymentWithDates ToPaymentWIthDates(this Payment payment, DateTime startDate, DateTime endDate)
     {
         var dates = payment.GenerateDates(startDate, endDate);
