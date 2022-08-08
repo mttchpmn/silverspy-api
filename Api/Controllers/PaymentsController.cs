@@ -65,7 +65,8 @@ public class PaymentsController : ControllerBase
         return Ok(result);
     }
     
-    [HttpDelete]
+    [HttpPost]
+    [Route("delete")]
     public async Task<IActionResult> DeletePayment(DeletePaymentInput input)
     {
         var authId = GetAuthId();
