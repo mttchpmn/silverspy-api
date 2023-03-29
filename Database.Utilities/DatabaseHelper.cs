@@ -48,6 +48,8 @@ namespace Database
         public DatabaseUpgradeResult MigrateDatabase(string connectionString)
         {
             Console.WriteLine("Migrating Database...");
+            
+            EnsureDatabase.For.PostgresqlDatabase(connectionString);
 
             var upgradeEngine = DeployChanges.To
                 .PostgresqlDatabase(connectionString)
