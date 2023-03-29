@@ -1,4 +1,4 @@
 ﻿echo "Launching Database service..."
-docker-compose -f ./docker-compose.local.yml run --service-ports db
+docker-compose -f ../docker-compose.local.yml run --service-ports db
 
 echo "Done."
