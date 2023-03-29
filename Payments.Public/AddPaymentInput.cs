@@ -10,6 +10,10 @@ public record ApiAddPaymentInput(
     decimal Value
 );
 
+public record ApiImportPaymentsInput(
+    List<ApiAddPaymentInput> Payments
+);
+
 public record ApiUpdatePaymentInput(
     int Id,
     string ReferenceDate,

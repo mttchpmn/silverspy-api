@@ -1,0 +1,94 @@
+﻿{
+  "payments": [
+    {
+      "name": "Rent",
+      "referenceDate": "04/07/2023 06:04:43",
+      "type": "Outgoing",
+      "frequency": "Fortnightly",
+      "category": "UTILITIES",
+      "details": "595 per week",
+      "value": 1190.00
+    },
+    {
+      "name": "Climbing membership",
+      "referenceDate": "04/07/2023 06:04:43",
+      "type": "Outgoing",
+      "frequency": "Monthly",
+      "category": "SUBSCRIPTIONS",
+      "details": "",
+      "value": 99.00
+    },
+    {
+      "name": "Flying loan",
+      "referenceDate": "04/26/2023 06:04:43",
+      "type": "Outgoing",
+      "frequency": "Monthly",
+      "category": "REPAYMENTS",
+      "details": "",
+      "value": 500.00
+    },
+    {
+      "name": "Car and Contents Insurance",
+      "referenceDate": "04/26/2023 06:04:43",
+      "type": "Outgoing",
+      "frequency": "Monthly",
+      "category": "BILLS",
+      "details": "",
+      "value": 83.00
+    },
+    {
+      "name": "Mobile bill",
+      "referenceDate": "04/26/2023 06:04:43",
+      "type": "Outgoing",
+      "frequency": "Monthly",
+      "category": "BILLS",
+      "details": "",
+      "value": 75.00
+    },
+    {
+      "name": "Internet bill",
+      "referenceDate": "04/26/2023 06:04:43",
+      "type": "Outgoing",
+      "frequency": "Monthly",
+      "category": "BILLS",
+      "details": "",
+      "value": 80.00
+    },
+    {
+      "name": "Cloud storage",
+      "referenceDate": "04/26/2023 06:04:43",
+      "type": "Outgoing",
+      "frequency": "Monthly",
+      "category": "BILLS",
+      "details": "",
+      "value": 20.00
+    },
+    {
+      "name": "Game Pass",
+      "referenceDate": "04/26/2023 06:04:43",
+      "type": "Outgoing",
+      "frequency": "Monthly",
+      "category": "SUBSCRIPTIONS",
+      "details": "",
+      "value": 13.00
+    },
+    {
+      "name": "Power Bill",
+      "referenceDate": "04/26/2023 06:04:43",
+      "type": "Outgoing",
+      "frequency": "Monthly",
+      "category": "BILLS",
+      "details": "",
+      "value": 100.00
+    },
+    {
+      "name": "Salary",
+      "referenceDate": "04/26/2023 06:04:43",
+      "type": "Incoming",
+      "frequency": "Monthly",
+      "category": "INCOME",
+      "details": "",
+      "value": 10040.54
+    }
+  ]
+}
