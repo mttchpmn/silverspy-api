@@ -18,7 +18,10 @@ public static class PaymentsServiceRegistry
    private static void RegisterDbConnectionFactory(IServiceCollection serviceCollection)
    {
       // TODO - Use env variable
-      var connectionString = "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres";
+      // var connectionString = "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres";
+      
+      var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
+      
       var connectionFactory = new DatabaseConnectionFactory(connectionString);
       
       serviceCollection.AddSingleton(connectionFactory);
