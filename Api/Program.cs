@@ -54,7 +54,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Health check endpoint
-app.MapGet("/", () => "Silverspy API online");
+app.MapGet("/", () => "Kia Ora! Silverspy API online");
 
 // app.UseHttpsRedirection();
 
