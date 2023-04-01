@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Payments.Services;
 using Transactions.Services;
+using Database.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,7 +48,7 @@ builder.Services.AddCors(options =>
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
 var databaseHelper = new DatabaseHelper(connectionString);
 var upgradeResult = databaseHelper.MigrateDatabase();
-Console.Writeline(upgradeResult);
+Console.WriteLine(upgradeResult);
 
 
 var app = builder.Build();
