@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Payments.Services;
 using Transactions.Services;
-using Database.Utilities;
+using Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,9 +45,9 @@ builder.Services.AddCors(options =>
 });
 
 // DB MIGRATION CODE - May not work?
-var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING") ?? throw new InvalidOperationException("Env variable 'DATABASE_CONNECTION_STRING' is unset");
 var databaseHelper = new DatabaseHelper(connectionString);
-var upgradeResult = databaseHelper.MigrateDatabase();
+var upgradeResult = databaseHelper.MigrateDatabase(connectionString);
 Console.WriteLine(upgradeResult);
 
 
