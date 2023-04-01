@@ -43,6 +43,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+// DB MIGRATION CODE - May not work?
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING");
+var databaseHelper = new DatabaseHelper(connectionString);
+var upgradeResult = databaseHelper.MigrateDatabase();
+Console.Writeline(upgradeResult);
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
