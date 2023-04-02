@@ -47,8 +47,8 @@ builder.Services.AddCors(options =>
 // DB MIGRATION CODE - May not work?
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING") ?? throw new InvalidOperationException("Env variable 'DATABASE_CONNECTION_STRING' is unset");
 var databaseHelper = new DatabaseHelper(connectionString);
-var upgradeResult = databaseHelper.MigrateDatabase(connectionString);
-Console.WriteLine(upgradeResult);
+//var upgradeResult = databaseHelper.MigrateDatabase(connectionString);
+// Console.WriteLine(upgradeResult);
 
 
 var app = builder.Build();
