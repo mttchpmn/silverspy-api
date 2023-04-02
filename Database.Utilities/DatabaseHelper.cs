@@ -49,7 +49,8 @@ namespace Database
         {
             Console.WriteLine("Migrating Database...");
 
-            EnsureDatabase.For.PostgresqlDatabase(connectionString);
+			// TODO - Fix this
+            // EnsureDatabase.For.PostgresqlDatabase(connectionString);
 
             var upgradeEngine = DeployChanges.To
                 .PostgresqlDatabase(connectionString)
