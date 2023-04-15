@@ -118,6 +118,7 @@ public class TransactionsRepository : ITransactionsRepository
 
     private async Task<int?> ImportTransaction(string authid, RawTransaction transaction)
     {
+        var uniqueId = $"{transaction.TransactionId}|{transaction.Reference.Substring(0, 4)}"; // TODO - Is this a good way of doing it?
         try
         {
             await using var connection = await _databaseConnectionFactory.GetConnection();
@@ -126,6 +127,7 @@ public class TransactionsRepository : ITransactionsRepository
                 @"INSERT INTO transaction (
                          auth_id,
                          transaction_id, 
+                         unique_id,
                          transaction_date, 
                          processed_date, 
                          reference, 
@@ -135,6 +137,7 @@ public class TransactionsRepository : ITransactionsRepository
                 VALUES (
                         @AuthId,
                         @TransactionId,
+                        @UniqueId,
                         @TransactionDate,
                         @ProcessedDate,
                         @Reference,
@@ -146,6 +149,7 @@ public class TransactionsRepository : ITransactionsRepository
             var transactionId = await connection.ExecuteScalarAsync<int>(sql, new
             {
                 AuthId = authid,
+                UniqueId = uniqueId,
                 transaction.TransactionId,
                 transaction.TransactionDate,
                 transaction.ProcessedDate,
