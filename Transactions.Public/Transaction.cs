@@ -16,5 +16,8 @@ public record Transaction(
 public enum TransactionType
 {
     DEBIT,
-    CREDIT
+    CREDIT,
+    EFTPOS,
+    TFR_IN,
+    TFR_OUT
 }

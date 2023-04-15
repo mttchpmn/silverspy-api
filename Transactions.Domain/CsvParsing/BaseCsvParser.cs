@@ -15,13 +15,26 @@ public abstract class BaseCsvParser
             ShouldSkipRecord = ShouldSkipRecord
         };
     }
-    
-    public IEnumerable<T> GetRecords<T>(string csvData)
+
+    public IEnumerable<T>? GetRecords<T>(string csvData)
     {
         using var reader = new StringReader(csvData);
         using var csv = new CsvReader(reader, _config);
 
-        return csv.GetRecords<T>().ToList();
+        try
+        {
+            return csv.GetRecords<T>().ToList();
+        }
+        catch (Exception e)
+        {
+            if (e.GetType() == typeof(HeaderValidationException))
+            {
+                Console.WriteLine("Encountered header validation exception");
+                return null;
+            }
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     protected abstract bool ShouldSkipRecord(ShouldSkipRecordArgs shouldSkipRecordArgs);

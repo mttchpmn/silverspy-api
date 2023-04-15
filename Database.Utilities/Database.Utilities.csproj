@@ -18,6 +18,7 @@
     <ItemGroup>
       <EmbeddedResource Include="MigrationScripts\001 - CreateTransactionTable.sql" />
       <EmbeddedResource Include="MigrationScripts\002 - CreatePaymentTable.sql" />
+      <EmbeddedResource Include="MigrationScripts\003 - MakeProcessedDateNullableForTransactions.sql" />
     </ItemGroup>
 
 </Project>
