@@ -61,6 +61,9 @@ Console.WriteLine(upgradeResult);
 
 var app = builder.Build();
 
+app.Logger.LogInformation("LOG: App running");
+Console.WriteLine("CONSOLE: App running");
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
