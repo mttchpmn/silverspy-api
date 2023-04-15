@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Payments.Services;
 using Transactions.Services;
 using Database;
+using Google.Cloud.Diagnostics.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Register Google Logging
+builder.Services.AddGoogleDiagnosticsForAspNetCore();
 
 // Add domain service registries
 TransactionsServiceRegistry.RegisterServices(builder.Services);
