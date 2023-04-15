@@ -13,7 +13,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Register Google Logging
-builder.Services.AddGoogleDiagnosticsForAspNetCore();
+var env = Environment.GetEnvironmentVariable("ENVIRONMENT");
+if (env == "PRODUCTION")
+{
+    builder.Services.AddGoogleDiagnosticsForAspNetCore();
+    builder.Services.AddGoogleErrorReportingForAspNetCore();
+}
 
 // Add domain service registries
 TransactionsServiceRegistry.RegisterServices(builder.Services);
@@ -49,13 +54,15 @@ builder.Services.AddCors(options =>
 });
 
 // DB MIGRATION CODE - May not work?
-var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING") ?? throw new InvalidOperationException("Env variable 'DATABASE_CONNECTION_STRING' is unset");
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING") ??
+                       throw new InvalidOperationException("Env variable 'DATABASE_CONNECTION_STRING' is unset");
 var databaseHelper = new DatabaseHelper(connectionString);
 var upgradeResult = databaseHelper.MigrateDatabase(connectionString);
 Console.WriteLine(upgradeResult);
 
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
