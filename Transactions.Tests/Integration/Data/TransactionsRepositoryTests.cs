@@ -124,7 +124,7 @@ public class TransactionsRepositoryTests
             var input = new List<RawTransaction>()
             {
                 new RawTransaction(
-                    111,
+                    "111",
                     DateTime.UnixEpoch,
                     DateTime.UnixEpoch,
                     "7605",
@@ -132,7 +132,7 @@ public class TransactionsRepositoryTests
                     159.50M,
                     TransactionType.DEBIT),
                 new RawTransaction(
-                    222,
+                    "222",
                     DateTime.UnixEpoch,
                     DateTime.UnixEpoch,
                     "7605",
@@ -140,7 +140,7 @@ public class TransactionsRepositoryTests
                     49.50M,
                     TransactionType.DEBIT),
                 new RawTransaction(
-                    333,
+                    "333",
                     DateTime.UnixEpoch,
                     DateTime.UnixEpoch,
                     "7605",
@@ -173,7 +173,7 @@ public class TransactionsRepositoryTests
             var input = new List<RawTransaction>()
             {
                 new RawTransaction(
-                    111,
+                    "111",
                     DateTime.UnixEpoch,
                     DateTime.UnixEpoch,
                     "7605",
@@ -181,7 +181,7 @@ public class TransactionsRepositoryTests
                     159.50M,
                     TransactionType.DEBIT),
                 new RawTransaction(
-                    222,
+                    "222",
                     DateTime.UnixEpoch,
                     DateTime.UnixEpoch,
                     "7605",
@@ -189,7 +189,7 @@ public class TransactionsRepositoryTests
                     49.50M,
                     TransactionType.DEBIT),
                 new RawTransaction(
-                    333,
+                    "333",
                     DateTime.UnixEpoch,
                     DateTime.UnixEpoch,
                     "7605",
@@ -212,7 +212,7 @@ public class TransactionsRepositoryTests
         return new List<RawTransaction>()
         {
             new RawTransaction(
-                111,
+                "111",
                 DateTime.UnixEpoch,
                 DateTime.UnixEpoch,
                 "7605",
@@ -221,7 +221,7 @@ public class TransactionsRepositoryTests
                 TransactionType.DEBIT),
 
             new RawTransaction(
-                222,
+                "222",
                 DateTime.UnixEpoch,
                 DateTime.UnixEpoch,
                 "7605",

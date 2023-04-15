@@ -45,7 +45,7 @@ public record AsbTransaction
     [Name("Date of Transaction")]
     public DateTime TransactionDate { get; set; }
     [Name("Unique Id")]
-    public int TransactionId { get; set; }
+    public string TransactionId { get; set; }
     [Name("Tran Type")]
     public TransactionType Type { get; set; }
     [Name("Reference")]

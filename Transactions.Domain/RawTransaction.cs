@@ -3,7 +3,7 @@
 namespace Transactions.Domain;
 
 public record RawTransaction(
-    int TransactionId,
+    string TransactionId,
     DateTime TransactionDate,
     DateTime ProcessedDate,
     string Reference,
