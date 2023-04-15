@@ -51,6 +51,9 @@ namespace Database
             
             EnsureDatabase.For.PostgresqlDatabase(connectionString);
 
+			// TODO - Fix this
+            // EnsureDatabase.For.PostgresqlDatabase(connectionString);
+
             var upgradeEngine = DeployChanges.To
                 .PostgresqlDatabase(connectionString)
                 .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())

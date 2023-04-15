@@ -29,8 +29,7 @@ public class TransactionsRepository : ITransactionsRepository
 
             if (id == null)
             {
-                _logger.LogInformation("Received null Transaction ID when importing Transaction: {Transaction}",
-                    rawTransaction.TransactionId);
+                // Transaction already exists in DB (user is trying to import duplicate)
                 continue;
             }
 
@@ -162,14 +161,14 @@ public class TransactionsRepository : ITransactionsRepository
         }
         catch (PostgresException e)
         {
-            _logger.LogError("Received Postgres Exception: {Message}", e.Message);
-            
             if (e.IsDuplicateException())
             {
-                _logger.LogInformation("Treating Transaction: {TransactionId} as duplicate, will return null", transaction.TransactionId);
+                _logger.LogInformation("Transaction: {TransactionId} already exists in DB, will treat as duplicate", transaction.TransactionId);
                 return null;
             }
-
+            
+            _logger.LogError("Received Postgres Exception: {Message}", e.Message);
+            
             throw new Exception(e.Message, e);
         }
     }

@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Database.Utilities\Database.Utilities.csproj" />
       <ProjectReference Include="..\Payments.Public\Payments.Public.csproj" />
       <ProjectReference Include="..\Payments.Services\Payments.Services.csproj" />
       <ProjectReference Include="..\Transactions.Services\Transactions.Services.csproj" />

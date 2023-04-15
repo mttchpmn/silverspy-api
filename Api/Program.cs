@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Payments.Services;
 using Transactions.Services;
+using Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+// DB MIGRATION CODE - May not work?
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING") ?? throw new InvalidOperationException("Env variable 'DATABASE_CONNECTION_STRING' is unset");
+var databaseHelper = new DatabaseHelper(connectionString);
+var upgradeResult = databaseHelper.MigrateDatabase(connectionString);
+Console.WriteLine(upgradeResult);
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,7 +62,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Health check endpoint
-app.MapGet("/", () => "Silverspy API online");
+app.MapGet("/", () => "Kia Ora! Silverspy API online");
 
 // app.UseHttpsRedirection();
 
