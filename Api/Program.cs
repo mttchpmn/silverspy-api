@@ -1,17 +1,12 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Payments.Services;
-using Transactions.Services;
 using Database;
 using Google.Cloud.Diagnostics.AspNetCore;
 using Google.Cloud.Diagnostics.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Payments.Services;
+using Transactions.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 // Register Google Logging
 var env = Environment.GetEnvironmentVariable("ENVIRONMENT");
@@ -22,9 +17,15 @@ if (env == "PRODUCTION")
 
     builder.Logging.ClearProviders();
     builder.Logging.AddConsole();
-    builder.Logging.AddGoogle(new LoggingServiceOptions { ProjectId = "silverspy"});
+    builder.Logging.AddGoogle(new LoggingServiceOptions {ProjectId = "silverspy"});
 }
 
+// Add services to the container.
+builder.Services.AddControllers();
+
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Add domain service registries
 TransactionsServiceRegistry.RegisterServices(builder.Services);
@@ -35,7 +36,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
     {
         c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-        c.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        c.TokenValidationParameters = new TokenValidationParameters
         {
             ValidAudience = builder.Configuration["Auth0:Audience"],
             ValidIssuer = $"{builder.Configuration["Auth0:Domain"]}"
@@ -58,12 +59,10 @@ var databaseHelper = new DatabaseHelper(connectionString);
 var upgradeResult = databaseHelper.MigrateDatabase(connectionString);
 Console.WriteLine(upgradeResult);
 
-
 var app = builder.Build();
 
 app.Logger.LogInformation("LOG: App running");
 Console.WriteLine("CONSOLE: App running");
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
