@@ -11,15 +11,19 @@ namespace Api.Controllers;
 public class TransactionsController : ControllerBase
 {
     private readonly ITransactionsService _transactionsService;
+    private readonly ILogger<TransactionsController> _logger;
 
-    public TransactionsController(ITransactionsService transactionsService)
+    public TransactionsController(ITransactionsService transactionsService, ILogger<TransactionsController> logger)
     {
         _transactionsService = transactionsService;
+        _logger = logger;
     }
     
     [HttpPost]
     public async Task<IActionResult> Import(ImportTransactionsInput input)
     {
+        _logger.LogInformation("Importing transactions for Bank type: {BankType}", input.BankType);
+        
         var authId = GetAuthId();
         var result = await _transactionsService.ImportTransactions(authId!, input);
         

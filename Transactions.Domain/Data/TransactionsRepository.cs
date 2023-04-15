@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using Transactions.Public;
 using Utilities;
@@ -8,12 +9,13 @@ namespace Transactions.Domain.Data;
 public class TransactionsRepository : ITransactionsRepository
 {
     private readonly DatabaseConnectionFactory _databaseConnectionFactory;
+    private readonly ILogger<TransactionsRepository> _logger;
 
-    public TransactionsRepository(DatabaseConnectionFactory databaseConnectionFactory)
+    public TransactionsRepository(DatabaseConnectionFactory databaseConnectionFactory,
+        ILogger<TransactionsRepository> logger)
     {
         _databaseConnectionFactory = databaseConnectionFactory;
-        // new DatabaseConnectionFactory(
-        //     "Server=localhost;Port=5432;Database=silverspy;User ID=postgres;Password=postgres");
+        _logger = logger;
     }
 
     public async Task<IEnumerable<Transaction>> ImportTransactions(string authId,
@@ -25,8 +27,14 @@ public class TransactionsRepository : ITransactionsRepository
         {
             var id = await ImportTransaction(authId, rawTransaction);
 
-            if (id != null)
-                importedTransactionIds.Add(id.Value);
+            if (id == null)
+            {
+                _logger.LogInformation("Received null Transaction ID when importing Transaction: {Transaction}",
+                    rawTransaction.TransactionId);
+                continue;
+            }
+
+            importedTransactionIds.Add(id.Value);
         }
 
         var importedTransactions = await GetTransactionsForIds(importedTransactionIds);
@@ -56,7 +64,7 @@ public class TransactionsRepository : ITransactionsRepository
 
         var sql = "SELECT category, SUM(value) FROM transaction WHERE auth_id = @AuthId GROUP BY category";
 
-        var records = (await connection.QueryAsync<CategoryTotalRecord>(sql, new { AuthId = authId })).ToList();
+        var records = (await connection.QueryAsync<CategoryTotalRecord>(sql, new {AuthId = authId})).ToList();
 
         var result = records.Select(x => x.ToCategoryTotal()).ToList();
 
@@ -98,7 +106,7 @@ public class TransactionsRepository : ITransactionsRepository
 
         var sql = "SELECT type, SUM(value) FROM transaction WHERE auth_id = @AuthId GROUP BY type";
 
-        var records = (await connection.QueryAsync<TotalRecord>(sql, new { AuthId = authId })).ToList();
+        var records = (await connection.QueryAsync<TotalRecord>(sql, new {AuthId = authId})).ToList();
 
         var incoming = records.SingleOrDefault(x => x.type.Equals(TransactionType.CREDIT))?.sum ?? 0;
         var outgoing = records.SingleOrDefault(x => x.type.Equals(TransactionType.DEBIT))?.sum ?? 0;
@@ -147,14 +155,18 @@ public class TransactionsRepository : ITransactionsRepository
                 transaction.Value,
                 transaction.Type,
             });
+            
+            _logger.LogInformation("Imported transaction with ID: {TransactionId} successfully", transactionId);
 
             return transactionId;
         }
         catch (PostgresException e)
         {
+            _logger.LogError("Received Postgres Exception: {Message}", e.Message);
+            
             if (e.IsDuplicateException())
             {
-                Console.WriteLine($"Duplicate: {transaction.TransactionId}");
+                _logger.LogInformation("Treating Transaction: {TransactionId} as duplicate, will return null", transaction.TransactionId);
                 return null;
             }
 
@@ -166,7 +178,8 @@ public class TransactionsRepository : ITransactionsRepository
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
-        var sql = @"SELECT id, transaction_id, transaction_date, processed_date, reference, description, type, value, category, details 
+        var sql =
+            @"SELECT id, transaction_id, transaction_date, processed_date, reference, description, type, value, category, details 
                     FROM transaction 
                     WHERE id = ANY(@TransactionIds)";
 

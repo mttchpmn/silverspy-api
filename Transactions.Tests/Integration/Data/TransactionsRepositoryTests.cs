@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Test.Utilities;
 using Transactions.Domain;
 using Transactions.Domain.Data;
@@ -18,7 +20,7 @@ public class TransactionsRepositoryTests
 
     public TransactionsRepositoryTests()
     {
-        _transactionsRepository = new TransactionsRepository(TestDatabaseConnectionFactory.GetFactory());
+        _transactionsRepository = new TransactionsRepository(TestDatabaseConnectionFactory.GetFactory(), Mock.Of<ILogger<TransactionsRepository>>());
     }
 
     public class ImportTransactions : TransactionsRepositoryTests
