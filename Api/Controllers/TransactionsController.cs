@@ -22,7 +22,8 @@ public class TransactionsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Import(ImportTransactionsInput input)
     {
-        _logger.LogInformation("Importing transactions for Bank type: {BankType}", input.BankType);
+        _logger.LogInformation("GLOG: Importing transactions for Bank type: {BankType}", input.BankType);
+        Console.WriteLine($"CONSOLE: Importing transactions for Bank type: {input.BankType}");
         
         var authId = GetAuthId();
         var result = await _transactionsService.ImportTransactions(authId!, input);

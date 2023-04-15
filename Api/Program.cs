@@ -19,6 +19,9 @@ if (env == "PRODUCTION")
 {
     builder.Services.AddGoogleDiagnosticsForAspNetCore();
     builder.Services.AddGoogleErrorReportingForAspNetCore();
+
+    builder.Logging.ClearProviders();
+    builder.Logging.AddGoogle();
 }
 
 
@@ -37,14 +40,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = $"{builder.Configuration["Auth0:Domain"]}"
         };
     });
-
-// Configure authorization
-// builder.Services.AddAuthorization(o =>
-//     {
-//         o.AddPolicy("todo:read-write", p => p.
-//             RequireAuthenticatedUser().
-//             RequireClaim("scope", "todo:read-write"));
-//     });
 
 // Add CORS policies
 builder.Services.AddCors(options =>
