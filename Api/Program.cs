@@ -17,11 +17,12 @@ builder.Services.AddSwaggerGen();
 var env = Environment.GetEnvironmentVariable("ENVIRONMENT");
 if (env == "PRODUCTION")
 {
-    builder.Services.AddGoogleDiagnosticsForAspNetCore();
-    builder.Services.AddGoogleErrorReportingForAspNetCore();
+    builder.Services.AddGoogleDiagnosticsForAspNetCore("silverspy", "silverspy-api", "1");
+    // builder.Services.AddGoogleErrorReportingForAspNetCore();
 
     builder.Logging.ClearProviders();
-    builder.Logging.AddGoogle();
+    builder.Logging.AddConsole();
+    builder.Logging.AddGoogle(new LoggingServiceOptions { ProjectId = "silverspy"});
 }
 
 
