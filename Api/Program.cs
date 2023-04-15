@@ -3,6 +3,7 @@ using Payments.Services;
 using Transactions.Services;
 using Database;
 using Google.Cloud.Diagnostics.AspNetCore;
+using Google.Cloud.Diagnostics.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ if (env == "PRODUCTION")
     builder.Services.AddGoogleDiagnosticsForAspNetCore();
     builder.Services.AddGoogleErrorReportingForAspNetCore();
 }
+
 
 // Add domain service registries
 TransactionsServiceRegistry.RegisterServices(builder.Services);
@@ -74,6 +76,11 @@ if (app.Environment.IsDevelopment())
 
 // Health check endpoint
 app.MapGet("/", () => "Kia Ora! Silverspy API online");
+app.MapGet("/log", () =>
+{
+    Console.WriteLine("CONSOLE LOG");
+    return "DONE";
+});
 
 // app.UseHttpsRedirection();
 
