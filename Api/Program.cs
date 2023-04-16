@@ -1,5 +1,5 @@
 using Database;
-using Google.Cloud.Diagnostics.AspNetCore;
+using Google.Cloud.Diagnostics.AspNetCore3;
 using Google.Cloud.Diagnostics.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -12,10 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 var env = Environment.GetEnvironmentVariable("ENVIRONMENT");
 if (env == "PRODUCTION")
 {
-    builder.Services.AddGoogleDiagnosticsForAspNetCore("silverspy", "silverspy-api", "1");
-    // builder.Services.AddGoogleErrorReportingForAspNetCore();
+    builder.Services.AddGoogleDiagnosticsForAspNetCore();
+    builder.Services.AddGoogleErrorReportingForAspNetCore();
 
-    builder.Logging.AddGoogle(new LoggingServiceOptions {ProjectId = "silverspy"});
+    builder.Logging.AddGoogle();
 }
 
 // Add services to the container.
