@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Transactions.Domain;
 using Transactions.Domain.Data;
 using Transactions.Public;
@@ -10,7 +11,7 @@ public static class TransactionsServiceRegistry
 {
    public static void RegisterServices(IServiceCollection serviceCollection)
    {
-      serviceCollection.AddScoped<ITransactionsService, TransactionsService>();
+      serviceCollection.AddSingleton<ITransactionsService, TransactionsService>();
       serviceCollection.AddScoped<ITransactionsRepository, TransactionsRepository>();
       serviceCollection.AddScoped<ICsvParserFactory, CsvParserFactory>();
 
