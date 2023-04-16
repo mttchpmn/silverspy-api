@@ -1,5 +1,4 @@
 using Database;
-using Google.Cloud.Diagnostics.AspNetCore3;
 using Google.Cloud.Diagnostics.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -12,9 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 var env = Environment.GetEnvironmentVariable("ENVIRONMENT");
 if (env == "PRODUCTION")
 {
-    builder.Services.AddGoogleDiagnosticsForAspNetCore();
-    builder.Services.AddGoogleErrorReportingForAspNetCore();
-
+    Console.WriteLine("Operating in PRODUCTION environment");
+    
+    builder.Services.AddGoogleDiagnostics();
     builder.Logging.AddGoogle();
 }
 
