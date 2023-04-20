@@ -118,7 +118,7 @@ public class TransactionsRepository : ITransactionsRepository
 
     private async Task<int?> ImportTransaction(string authid, RawTransaction transaction)
     {
-        var uniqueId = $"{transaction.TransactionId}|{transaction.Reference.Substring(0, 4)}"; // TODO - Is this a good way of doing it?
+        // var uniqueId = $"{transaction.TransactionId}|{transaction.Reference.Length > 3 ? transaction.Reference.Substring(0, 4) : ''}"; // TODO - Is this a good way of doing it?
         try
         {
             await using var connection = await _databaseConnectionFactory.GetConnection();
@@ -132,6 +132,7 @@ public class TransactionsRepository : ITransactionsRepository
                          processed_date, 
                          reference, 
                          description, 
+                         category,
                          value, 
                          type) 
                 VALUES (
@@ -142,6 +143,7 @@ public class TransactionsRepository : ITransactionsRepository
                         @ProcessedDate,
                         @Reference,
                         @Description,
+                        @Category,
                         @Value,
                         @Type)
                 RETURNING id";
@@ -149,12 +151,13 @@ public class TransactionsRepository : ITransactionsRepository
             var transactionId = await connection.ExecuteScalarAsync<int>(sql, new
             {
                 AuthId = authid,
-                UniqueId = uniqueId,
+                UniqueId = transaction.TransactionId,
                 transaction.TransactionId,
                 transaction.TransactionDate,
                 transaction.ProcessedDate,
                 transaction.Reference,
                 transaction.Description,
+                Category = transaction.Category ?? "",
                 transaction.Value,
                 transaction.Type,
             });

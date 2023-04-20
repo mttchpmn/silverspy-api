@@ -8,11 +8,13 @@ public class TransactionsService : ITransactionsService
 {
     private readonly ICsvParserFactory _csvParserFactory;
     private readonly ITransactionsRepository _transactionsRepository;
+    private readonly IAkahuService _akahuService;
     private readonly ILogger<TransactionsService> _logger;
 
-    public TransactionsService(ICsvParserFactory csvParserFactory, ITransactionsRepository transactionsRepository, ILogger<TransactionsService> logger)
+    public TransactionsService(ICsvParserFactory csvParserFactory, ITransactionsRepository transactionsRepository, IAkahuService akahuService, ILogger<TransactionsService> logger)
     {
         _transactionsRepository = transactionsRepository;
+        _akahuService = akahuService;
         _logger = logger;
         _csvParserFactory = csvParserFactory;
     }
@@ -25,6 +27,16 @@ public class TransactionsService : ITransactionsService
 
         var importedTransactions = (await _transactionsRepository.ImportTransactions(authId, rawTransactions)).ToList();
         _logger.LogInformation("Imported {TransactionCount} transactions", importedTransactions.Count);
+
+        return importedTransactions;
+    }
+
+    public async Task<IEnumerable<Transaction>> IngestTransactions(string authId, IngestTransactionsInput input)
+    {
+        var rawTransactions = await _akahuService.GetTransactions(input.AkahuId, input.AkahuToken);
+        var importedTransactions = (await _transactionsRepository.ImportTransactions(authId, rawTransactions)).ToList();
+        
+        _logger.LogInformation("Imported {TransactionCount} new transactions", importedTransactions.Count);
 
         return importedTransactions;
     }

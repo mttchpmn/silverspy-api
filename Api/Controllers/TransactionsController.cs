@@ -31,6 +31,18 @@ public class TransactionsController : ControllerBase
         return Ok(result);
     }
     
+    [HttpPost]
+    [Route("ingest")]
+    public async Task<IActionResult> Ingest(IngestTransactionsInput input)
+    {
+        _logger.LogInformation("Ingesting transactions");
+        
+        var authId = GetAuthId();
+        var result = await _transactionsService.IngestTransactions(authId!, input);
+        
+        return Ok(result);
+    }
+    
     [HttpGet]
     public async Task<IActionResult> GetTransactions()
     {

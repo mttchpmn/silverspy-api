@@ -9,5 +9,6 @@ public record RawTransaction(
     string Reference,
     string Description,
     decimal Value,
-    TransactionType Type
+    TransactionType Type,
+    string? Category = null
     );
