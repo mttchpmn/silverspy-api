@@ -3,5 +3,4 @@
 public record ImportTransactionsInput(
     string BankType,
     string CsvData
-    );
-    
+);

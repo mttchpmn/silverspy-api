@@ -11,9 +11,10 @@ public static class TransactionsServiceRegistry
 {
    public static void RegisterServices(IServiceCollection serviceCollection)
    {
-      serviceCollection.AddSingleton<ITransactionsService, TransactionsService>();
+      serviceCollection.AddScoped<ITransactionsService, TransactionsService>();
       serviceCollection.AddScoped<ITransactionsRepository, TransactionsRepository>();
       serviceCollection.AddScoped<ICsvParserFactory, CsvParserFactory>();
+      serviceCollection.AddScoped<IAkahuService, AkahuService>();
 
       RegisterDbConnectionFactory(serviceCollection);
    }
