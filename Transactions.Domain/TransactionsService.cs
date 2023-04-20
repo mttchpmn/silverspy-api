@@ -41,13 +41,13 @@ public class TransactionsService : ITransactionsService
         return importedTransactions;
     }
 
-    public async Task<TransactionData> GetTransactionData(string authId)
+    public async Task<TransactionData> GetTransactionData(string authId, DateTime? from, DateTime? to)
     {
         // TODO - Unit tests
-        var transactions = await _transactionsRepository.GetTransactions(authId);
+        var transactions = await _transactionsRepository.GetTransactions(authId, from, to);
         var categoryTotals = await _transactionsRepository.GetCategoryTotals(authId);
         var totals = await _transactionsRepository.GetTransactionTotals(authId);
-
+        
         return new TransactionData(transactions, categoryTotals, totals.TotalIncoming, totals.TotalOutgoing, totals.NetPosition);
     }
 

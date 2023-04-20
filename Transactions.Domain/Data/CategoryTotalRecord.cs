@@ -14,5 +14,5 @@ public record CategoryTotalRecord
     public string category { get; init; }
     public decimal sum { get; init; }
 
-    public CategoryTotal ToCategoryTotal() => new CategoryTotal(category, sum);
+    public CategoryTotal ToCategoryTotal() => new (string.IsNullOrWhiteSpace(category) ? "Uncategorized" : category, sum);
 }

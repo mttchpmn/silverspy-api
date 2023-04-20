@@ -41,7 +41,7 @@ public class TransactionsRepository : ITransactionsRepository
         return importedTransactions;
     }
 
-    public async Task<IEnumerable<Transaction>> GetTransactions(string authId)
+    public async Task<IEnumerable<Transaction>> GetTransactions(string authId, DateTime? from, DateTime? to)
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
@@ -50,7 +50,13 @@ public class TransactionsRepository : ITransactionsRepository
                     FROM transaction
                     WHERE auth_id = @AuthId";
 
-        var records = await connection.QueryAsync<TransactionRecord>(sql, new {AuthId = authId});
+        if (from != null)
+            sql += " AND transaction_date > @FromDate";
+        
+        if (to != null)
+            sql += " AND transaction_date < @ToDate";
+
+        var records = await connection.QueryAsync<TransactionRecord>(sql, new {AuthId = authId, FromDate = from, ToDate = to});
 
         var result = records.Select(x => x.ToTransaction()).OrderBy(x => x.Id).ToList();
 

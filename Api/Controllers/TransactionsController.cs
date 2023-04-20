@@ -44,11 +44,12 @@ public class TransactionsController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetTransactions()
+    public async Task<IActionResult> GetTransactions(DateTime? from, DateTime? to)
     {
+        _logger.LogInformation("Getting transactions from {FromDate} to {ToDate}", from, to);
         var authId = GetAuthId();
 
-        var transactionData = await _transactionsService.GetTransactionData(authId);
+        var transactionData = await _transactionsService.GetTransactionData(authId, from, to);
         
         return Ok(transactionData);
     }
