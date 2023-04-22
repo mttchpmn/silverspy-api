@@ -2,6 +2,8 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/Database.Utilities/DatabaseHelper.cs" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/Database.Utilities/MigrationScripts/001 - CreateTransactionTable.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/Database.Utilities/MigrationScripts/002 - CreatePaymentTable.sql" dialect="GenericSQL" />
+    <file url="PROJECT" dialect="PostgreSQL" />
   </component>
 </project>

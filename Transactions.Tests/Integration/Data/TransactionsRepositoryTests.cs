@@ -130,7 +130,7 @@ public class TransactionsRepositoryTests
                     "7605",
                     "Groceries",
                     159.50M,
-                    TransactionType.DEBIT),
+                    TransactionType.DEBIT, TransactionCategory.Uncategorized),
                 new RawTransaction(
                     "222",
                     DateTime.UnixEpoch,
@@ -138,7 +138,7 @@ public class TransactionsRepositoryTests
                     "7605",
                     "Beers",
                     49.50M,
-                    TransactionType.DEBIT),
+                    TransactionType.DEBIT, TransactionCategory.Uncategorized),
                 new RawTransaction(
                     "333",
                     DateTime.UnixEpoch,
@@ -146,7 +146,7 @@ public class TransactionsRepositoryTests
                     "7605",
                     "Misc",
                     39.50M,
-                    TransactionType.DEBIT),
+                    TransactionType.DEBIT, TransactionCategory.Uncategorized),
             };
             await _transactionsRepository.ImportTransactions(_authId, input);
             await _transactionsRepository.UpdateTransaction(_authId, new UpdateTransactionInput(1, "Shopping", "Foo"));
@@ -179,7 +179,7 @@ public class TransactionsRepositoryTests
                     "7605",
                     "Groceries",
                     159.50M,
-                    TransactionType.DEBIT),
+                    TransactionType.DEBIT, TransactionCategory.Uncategorized),
                 new RawTransaction(
                     "222",
                     DateTime.UnixEpoch,
@@ -187,7 +187,7 @@ public class TransactionsRepositoryTests
                     "7605",
                     "Beers",
                     49.50M,
-                    TransactionType.DEBIT),
+                    TransactionType.DEBIT, TransactionCategory.Uncategorized),
                 new RawTransaction(
                     "333",
                     DateTime.UnixEpoch,
@@ -195,7 +195,7 @@ public class TransactionsRepositoryTests
                     "7605",
                     "Misc",
                     39.50M,
-                    TransactionType.CREDIT),
+                    TransactionType.CREDIT, TransactionCategory.Uncategorized),
             };
             await _transactionsRepository.ImportTransactions(_authId, input);
 
@@ -218,7 +218,7 @@ public class TransactionsRepositoryTests
                 "7605",
                 "Groceries",
                 159.50M,
-                TransactionType.DEBIT),
+                TransactionType.DEBIT, TransactionCategory.Uncategorized),
 
             new RawTransaction(
                 "222",
@@ -227,7 +227,7 @@ public class TransactionsRepositoryTests
                 "7605",
                 "Beers",
                 49.50M,
-                TransactionType.DEBIT),
+                TransactionType.DEBIT, TransactionCategory.Uncategorized),
         };
     }
 }

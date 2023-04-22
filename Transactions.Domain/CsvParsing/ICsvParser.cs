@@ -1,4 +1,6 @@
-﻿namespace Transactions.Domain.CsvParsing;
+﻿using Transactions.Public;
+
+namespace Transactions.Domain.CsvParsing;
 
 public interface ICsvParser
 {

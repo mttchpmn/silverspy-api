@@ -163,7 +163,7 @@ public class TransactionsRepository : ITransactionsRepository
                 transaction.ProcessedDate,
                 transaction.Reference,
                 transaction.Description,
-                Category = transaction.Category ?? "",
+                transaction.Category,
                 transaction.Value,
                 transaction.Type,
             });

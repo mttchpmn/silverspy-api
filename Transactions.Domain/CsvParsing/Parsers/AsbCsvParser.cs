@@ -71,7 +71,8 @@ public record AsbCreditCardTransaction : IAsbTransaction
             Reference,
             Description,
             Amount,
-            Type
+            Type,
+            TransactionCategory.Uncategorized
         );
     }
 }
@@ -101,7 +102,8 @@ public record AsbAccountTransaction : IAsbTransaction
             Payee,
             Description,
             Amount,
-            Type
+            Type,
+            TransactionCategory.Uncategorized
         );
     }
 }

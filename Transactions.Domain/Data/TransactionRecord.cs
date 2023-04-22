@@ -14,7 +14,7 @@ public record TransactionRecord
     public TransactionType type { get; init; }
     public decimal value { get; init; }
     public string details { get; init; }
-    public string category { get; init; }
+    public int category { get; init; }
 
     public Transaction ToTransaction()
     {
@@ -28,7 +28,7 @@ public record TransactionRecord
             description,
             value,
             type,
-            category,
+            (TransactionCategory)category,
             details);
     }
 }

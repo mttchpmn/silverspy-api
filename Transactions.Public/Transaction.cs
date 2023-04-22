@@ -10,7 +10,7 @@ public record Transaction(
     string Description,
     decimal Value,
     TransactionType Type,
-    string Category,
+    TransactionCategory Category,
     string Details);
 
 public enum TransactionType

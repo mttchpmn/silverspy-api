@@ -1,4 +1,6 @@
-﻿namespace Transactions.Domain;
+﻿using Transactions.Public;
+
+namespace Transactions.Domain;
 
 public interface IAkahuService
 {

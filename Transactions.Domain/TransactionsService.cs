@@ -11,17 +11,19 @@ public class TransactionsService : ITransactionsService
     private readonly IAkahuService _akahuService;
     private readonly ILogger<TransactionsService> _logger;
 
-    public TransactionsService(ICsvParserFactory csvParserFactory, ITransactionsRepository transactionsRepository, IAkahuService akahuService, ILogger<TransactionsService> logger)
+    public TransactionsService(ICsvParserFactory csvParserFactory, ITransactionsRepository transactionsRepository,
+        IAkahuService akahuService, ILogger<TransactionsService> logger)
     {
         _transactionsRepository = transactionsRepository;
         _akahuService = akahuService;
         _logger = logger;
         _csvParserFactory = csvParserFactory;
     }
+
     public async Task<IEnumerable<Transaction>> ImportTransactions(string authId, ImportTransactionsInput input)
     {
         var parser = _csvParserFactory.GetParser(input.BankType);
-        
+
         var rawTransactions = (await parser.Parse(input.CsvData)).ToList();
         _logger.LogInformation("Parsed {RawTransactionCount} raw transactions", rawTransactions.Count);
 
@@ -35,20 +37,22 @@ public class TransactionsService : ITransactionsService
     {
         var rawTransactions = await _akahuService.GetTransactions(input.AkahuId, input.AkahuToken);
         var importedTransactions = (await _transactionsRepository.ImportTransactions(authId, rawTransactions)).ToList();
-        
+
         _logger.LogInformation("Imported {TransactionCount} new transactions", importedTransactions.Count);
 
         return importedTransactions;
     }
 
-    public async Task<TransactionData> GetTransactionData(string authId, DateTime? from, DateTime? to)
+    public async Task<TransactionResponse> GetTransactionData(string authId, DateTime? from, DateTime? to)
     {
         // TODO - Unit tests
         var transactions = await _transactionsRepository.GetTransactions(authId, from, to);
+        var transactionDtos = transactions.Select(TransactionDto.FromTransaction).ToList();
         var categoryTotals = await _transactionsRepository.GetCategoryTotals(authId);
         var totals = await _transactionsRepository.GetTransactionTotals(authId);
-        
-        return new TransactionData(transactions, categoryTotals, totals.TotalIncoming, totals.TotalOutgoing, totals.NetPosition);
+
+        return new TransactionResponse(transactionDtos, categoryTotals, totals.TotalIncoming, totals.TotalOutgoing,
+            totals.NetPosition);
     }
 
     public Task<IEnumerable<Transaction>> GetTransactions(string authId)

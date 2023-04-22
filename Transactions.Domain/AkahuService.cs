@@ -39,7 +39,7 @@ public class AkahuService : IAkahuService
     private static IEnumerable<RawTransaction> ConvertTransactions(IEnumerable<AkahuTransaction> akahuTransactions)
     {
         return akahuTransactions.Select(x => new RawTransaction(x.Id, DateTime.Parse(x.Date), null,
-            x.MerchantDetails?.Name ?? x.Description, x.Description, x.Amount, GetTranType(x.Type), x.CategoryDetails?.Groups?.PersonalFinance?.Name ?? ""));
+            x.MerchantDetails?.Name ?? x.Description, x.Description, x.Amount, GetTranType(x.Type), TransactionCategory.Uncategorized));
     }
 
     private static TransactionType GetTranType(string argType)

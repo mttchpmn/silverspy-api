@@ -1,6 +1,6 @@
 ﻿namespace Transactions.Public;
 
 public record CategoryTotal(
-    string Category,
+    TransactionCategory Category,
     decimal Value
 );

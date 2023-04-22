@@ -1,6 +1,4 @@
-﻿using Transactions.Public;
-
-namespace Transactions.Domain;
+﻿namespace Transactions.Public;
 
 public record RawTransaction(
     string TransactionId,
@@ -10,5 +8,5 @@ public record RawTransaction(
     string Description,
     decimal Value,
     TransactionType Type,
-    string? Category = null
+    TransactionCategory Category
     );

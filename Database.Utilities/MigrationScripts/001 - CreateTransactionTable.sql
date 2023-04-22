@@ -10,7 +10,7 @@ CREATE TABLE transaction
     description      VARCHAR(255) NOT NULL,
     type             integer NOT NULL,
     value            money NOT NULL,
-    category         VARCHAR(255),
+    category         integer,
     details          VARCHAR(255),
     UNIQUE (auth_id, unique_id)
 );
