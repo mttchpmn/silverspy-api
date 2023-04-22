@@ -1,6 +1,6 @@
 ﻿namespace Transactions.Public;
 
-public record TransactionResponse(IEnumerable<TransactionDto> Transactions, IEnumerable<CategoryTotal> CategoryTotals, decimal TotalIncoming, decimal TotalOutgoing, decimal NetPosition);
+public record TransactionResponse(IEnumerable<TransactionDto> Transactions, IEnumerable<CategoryTotalDto> CategoryTotals, decimal TotalIncoming, decimal TotalOutgoing, decimal NetPosition);
 
 public record TransactionDto(int Id, string TransactionId, DateTime TransactionDate, string Reference, string Description,
     decimal Value, string Type, string Category, string Details)

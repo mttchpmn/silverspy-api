@@ -49,9 +49,10 @@ public class TransactionsService : ITransactionsService
         var transactions = await _transactionsRepository.GetTransactions(authId, from, to);
         var transactionDtos = transactions.Select(TransactionDto.FromTransaction).ToList();
         var categoryTotals = await _transactionsRepository.GetCategoryTotals(authId);
+        var categoryTotalDtos = categoryTotals.Select(CategoryTotalDto.FromCategoryTotal).ToList();
         var totals = await _transactionsRepository.GetTransactionTotals(authId);
 
-        return new TransactionResponse(transactionDtos, categoryTotals, totals.TotalIncoming, totals.TotalOutgoing,
+        return new TransactionResponse(transactionDtos, categoryTotalDtos, totals.TotalIncoming, totals.TotalOutgoing,
             totals.NetPosition);
     }
 
@@ -70,3 +71,4 @@ public class TransactionsService : ITransactionsService
         return _transactionsRepository.UpdateTransaction(authId, input);
     }
 }
+
