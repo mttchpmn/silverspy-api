@@ -63,13 +63,21 @@ public class TransactionsRepository : ITransactionsRepository
         return result;
     }
 
-    public async Task<IEnumerable<CategoryTotal>> GetCategoryTotals(string authId)
+    public async Task<IEnumerable<CategoryTotal>> GetCategoryTotals(string authId, DateTime? from, DateTime? to)
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
-        var sql = "SELECT category, SUM(value) FROM transaction WHERE auth_id = @AuthId GROUP BY category";
+        var sql = "SELECT category, SUM(value) FROM transaction WHERE auth_id = @AuthId ";
+        
+        if (from != null)
+            sql += " AND transaction_date > @FromDate";
+        
+        if (to != null)
+            sql += " AND transaction_date < @ToDate";
 
-        var records = (await connection.QueryAsync<CategoryTotalRecord>(sql, new {AuthId = authId})).ToList();
+        sql += " GROUP BY category";
+
+        var records = (await connection.QueryAsync<CategoryTotalRecord>(sql, new {AuthId = authId, FromDate = from, ToDate = to})).ToList();
 
         var result = records.Select(x => x.ToCategoryTotal()).ToList();
 

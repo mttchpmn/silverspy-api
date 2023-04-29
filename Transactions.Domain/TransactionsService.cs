@@ -48,7 +48,7 @@ public class TransactionsService : ITransactionsService
         // TODO - Unit tests
         var transactions = await _transactionsRepository.GetTransactions(authId, from, to);
         var transactionDtos = transactions.Select(TransactionDto.FromTransaction).ToList();
-        var categoryTotals = await _transactionsRepository.GetCategoryTotals(authId);
+        var categoryTotals = await _transactionsRepository.GetCategoryTotals(authId, from, to);
         var categoryTotalDtos = categoryTotals.Select(CategoryTotalDto.FromCategoryTotal).ToList();
         var totals = await _transactionsRepository.GetTransactionTotals(authId);
 
@@ -59,11 +59,6 @@ public class TransactionsService : ITransactionsService
     public Task<IEnumerable<Transaction>> GetTransactions(string authId)
     {
         return _transactionsRepository.GetTransactions(authId);
-    }
-
-    public async Task<IEnumerable<CategoryTotal>> GetCategoryTotals(string authId)
-    {
-        return await _transactionsRepository.GetCategoryTotals(authId);
     }
 
     public Task<Transaction> UpdateTransaction(string authId, UpdateTransactionInput input)
