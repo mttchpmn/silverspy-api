@@ -61,9 +61,12 @@ public class TransactionsService : ITransactionsService
         return _transactionsRepository.GetTransactions(authId);
     }
 
-    public Task<Transaction> UpdateTransaction(string authId, UpdateTransactionInput input)
+    public async Task<TransactionDto> UpdateTransaction(string authId, UpdateTransactionInput input)
     {
-        return _transactionsRepository.UpdateTransaction(authId, input);
+        var transaction = await _transactionsRepository.UpdateTransaction(authId, input);
+        var result = TransactionDto.FromTransaction(transaction);
+
+        return result;
     }
 }
 
