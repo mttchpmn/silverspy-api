@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Globalization;
+using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using Transactions.Public;
@@ -88,6 +89,11 @@ public class TransactionsRepository : ITransactionsRepository
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
+        var textInfo = new CultureInfo("en-US", false).TextInfo;
+        var categoryString = textInfo.ToTitleCase(input.Category);
+        var successful = Enum.TryParse(categoryString, out TransactionCategory category);
+        var categoryInt = (int) category;
+
         var existingTransaction = await connection.QuerySingleOrDefaultAsync<TransactionRecord>(
             "SELECT id FROM transaction WHERE auth_id = @AuthId AND id = @TransactionId", new
             {
@@ -104,7 +110,7 @@ public class TransactionsRepository : ITransactionsRepository
         var affectedRows = await connection.ExecuteAsync(sql,
             new
             {
-                Category = input.Category, Details = input.Details, TransactionId = input.TransactionId, AuthId = authId
+                Category = categoryInt, Details = input.Details, TransactionId = input.TransactionId, AuthId = authId
             });
         Console.WriteLine($"Affected rows: {affectedRows}");
 
