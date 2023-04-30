@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Globalization;
+using Dapper;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using Transactions.Public;
@@ -88,6 +89,9 @@ public class TransactionsRepository : ITransactionsRepository
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
+
+        var categoryInt = GetCategoryInteger(input.Category);
+
         var existingTransaction = await connection.QuerySingleOrDefaultAsync<TransactionRecord>(
             "SELECT id FROM transaction WHERE auth_id = @AuthId AND id = @TransactionId", new
             {
@@ -104,13 +108,37 @@ public class TransactionsRepository : ITransactionsRepository
         var affectedRows = await connection.ExecuteAsync(sql,
             new
             {
-                Category = input.Category, Details = input.Details, TransactionId = input.TransactionId, AuthId = authId
+                Category = categoryInt, Details = input.Details, TransactionId = input.TransactionId, AuthId = authId
             });
         Console.WriteLine($"Affected rows: {affectedRows}");
 
         var transaction = (await GetTransactionsForIds(new[] {input.TransactionId})).First();
 
         return transaction;
+    }
+
+    private int GetCategoryInteger(string inputCategory)
+    {
+        return inputCategory.ToUpper() switch
+        {
+            "UNCATEGORIZED" => (int)TransactionCategory.Uncategorized,
+            "RENT" => (int)TransactionCategory.Rent,
+            "UTILITIES" => (int)TransactionCategory.Utilities,
+            "GROCERIES" => (int)TransactionCategory.Groceries,
+            "TRANSPORTATION" => (int)TransactionCategory.Transportation,
+            "INSURANCE" => (int)TransactionCategory.Insurance,
+            "HEALTHCARE" => (int)TransactionCategory.Healthcare,
+            "REPAYMENTS" => (int)TransactionCategory.Repayments,
+            "SAVINGS" => (int)TransactionCategory.Savings,
+            "INVESTMENT" => (int)TransactionCategory.Investment,
+            "SUBSCRIPTIONS" => (int)TransactionCategory.Subscriptions,
+            "SHOPPING" => (int)TransactionCategory.Shopping,
+            "FOODANDDRINK" => (int)TransactionCategory.FoodAndDrink,
+            "RECREATION" => (int)TransactionCategory.Recreation,
+            "PERSONAL" => (int)TransactionCategory.Personal,
+            "MISCELLANEOUS" => (int)TransactionCategory.Miscellaneous,
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 
     public async Task<TransactionTotals> GetTransactionTotals(string authId)
