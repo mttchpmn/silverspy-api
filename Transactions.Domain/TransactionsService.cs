@@ -43,17 +43,35 @@ public class TransactionsService : ITransactionsService
         return importedTransactions;
     }
 
-    public async Task<TransactionResponse> GetTransactionData(string authId, DateTime? from, DateTime? to)
+    public async Task<TransactionResponse> GetTransactionResponse(string authId, DateTime? from, DateTime? to)
     {
         // TODO - Unit tests
         var transactions = await _transactionsRepository.GetTransactions(authId, from, to);
         var transactionDtos = transactions.Select(TransactionDto.FromTransaction).ToList();
         var categoryTotals = await _transactionsRepository.GetCategoryTotals(authId, from, to);
         var categoryTotalDtos = categoryTotals.Select(CategoryTotalDto.FromCategoryTotal).ToList();
+
+        var categorySummaries =
+            categoryTotalDtos.Select(x =>
+                new CategorySummaryDto(x.Category, x.Value, GetBudgetForCategory(x.Category)));
+
         var totals = await _transactionsRepository.GetTransactionTotals(authId);
 
-        return new TransactionResponse(transactionDtos, categoryTotalDtos, totals.TotalIncoming, totals.TotalOutgoing,
+        return new TransactionResponse(transactionDtos, categorySummaries, totals.TotalIncoming, totals.TotalOutgoing,
             totals.NetPosition);
+    }
+
+    // TODO - Get rid of this temporary implementation
+    private decimal? GetBudgetForCategory(string category)
+    {
+        return category switch
+        {
+            "FOODANDDRINK" => 150,
+            "GROCERIES" => 150,
+            "TRANSPORTATION" => 100,
+            "SHOPPING" => 200,
+            _ => null
+        };
     }
 
     public Task<IEnumerable<Transaction>> GetTransactions(string authId)
@@ -69,4 +87,3 @@ public class TransactionsService : ITransactionsService
         return result;
     }
 }
-

@@ -22,8 +22,7 @@ public class TransactionsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Import(ImportTransactionsInput input)
     {
-        _logger.LogInformation("GLOG: Importing transactions for Bank type: {BankType}", input.BankType);
-        Console.WriteLine($"CONSOLE: Importing transactions for Bank type: {input.BankType}");
+        _logger.LogInformation("Importing transactions for Bank type: {BankType}...", input.BankType);
         
         var authId = GetAuthId();
         var result = await _transactionsService.ImportTransactions(authId!, input);
@@ -35,7 +34,7 @@ public class TransactionsController : ControllerBase
     [Route("ingest")]
     public async Task<IActionResult> Ingest(IngestTransactionsInput input)
     {
-        _logger.LogInformation("Ingesting transactions");
+        _logger.LogInformation("Ingesting transactions...");
         
         var authId = GetAuthId();
         var result = await _transactionsService.IngestTransactions(authId!, input);
@@ -46,10 +45,10 @@ public class TransactionsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetTransactions(DateTime? from, DateTime? to)
     {
-        _logger.LogInformation("Getting transactions from {FromDate} to {ToDate}", from, to);
+        _logger.LogInformation("Getting transactions from {FromDate} to {ToDate}...", from, to);
         var authId = GetAuthId();
 
-        var transactionData = await _transactionsService.GetTransactionData(authId, from, to);
+        var transactionData = await _transactionsService.GetTransactionResponse(authId, from, to);
         
         return Ok(transactionData);
     }
@@ -57,6 +56,8 @@ public class TransactionsController : ControllerBase
     [HttpPatch]
     public async Task<IActionResult> UpdateTransaction(UpdateTransactionInput input)
     {
+        _logger.LogInformation("Updating transaction with ID: {TransactionId}", input.TransactionId);
+        
         var authId = GetAuthId();
 
         var result = await _transactionsService.UpdateTransaction(authId, input);

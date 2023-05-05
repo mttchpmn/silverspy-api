@@ -54,7 +54,6 @@ var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_S
                        throw new InvalidOperationException("Env variable 'DATABASE_CONNECTION_STRING' is unset");
 var databaseHelper = new DatabaseHelper(connectionString);
 var upgradeResult = databaseHelper.MigrateDatabase(connectionString);
-Console.WriteLine(upgradeResult);
 
 var app = builder.Build();
 
