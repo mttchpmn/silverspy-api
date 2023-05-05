@@ -62,7 +62,7 @@ public class TransactionsService : ITransactionsService
     }
 
     // TODO - Get rid of this temporary implementation
-    private decimal? GetBudgetForCategory(string category)
+    private decimal GetBudgetForCategory(string category)
     {
         return category switch
         {
@@ -70,7 +70,7 @@ public class TransactionsService : ITransactionsService
             "GROCERIES" => 150,
             "TRANSPORTATION" => 100,
             "SHOPPING" => 200,
-            _ => null
+            _ => 0
         };
     }
 

@@ -9,5 +9,5 @@ public record CategorySummary(
 public record CategorySummaryDto(
     string Category,
     decimal CurrentSpend,
-    decimal? Budget
+    decimal Budget
     );
