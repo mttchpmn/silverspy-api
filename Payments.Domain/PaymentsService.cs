@@ -59,18 +59,22 @@ public class PaymentsService : IPaymentsService
             categoryTotals);
     }
 
-    public async Task<PaymentsSummary> GetPaymentsSummary(string authId, GetPaymentsSummaryInput input)
+    public async Task<PaymentForecast> GetPaymentForecast(string authId, GetPaymentForecastInput input)
     {
         var payments = await _paymentsRepository.GetAllPayments(authId);
 
-        var paymentsWithDates = payments.Select(x => x.ToPaymentWIthDates(input.StartDate, input.EndDate)).ToList();
+        var paymentInstances = payments.SelectMany(x => x.ToPaymentInstances(input.StartDate, input.EndDate)).ToList();
+        paymentInstances.Sort((a, b) => a.PaymentDate.CompareTo(b.PaymentDate));
 
-        var totalOutgoing = paymentsWithDates.Sum(x => x.GetTotalValue());
+        var totalOutgoing = paymentInstances.Where(x => x.Type == PaymentType.Outgoing).Sum(x => x.Value);
+        var totalIncoming = paymentInstances.Where(x => x.Type == PaymentType.Incoming).Sum(x => x.Value);
 
-        return new PaymentsSummary(paymentsWithDates, totalOutgoing);
+        var netPosition = totalIncoming - totalOutgoing;
+
+        return new PaymentForecast(paymentInstances.Select(x => x.ToApiPaymentInstance()), totalIncoming, totalOutgoing, netPosition);
     }
 
-    public async Task<PaymentsPeriod> GetPaymentsPeriod(string authId, GetPaymentsSummaryInput input)
+    public async Task<PaymentsPeriod> GetPaymentsPeriod(string authId, GetPaymentForecastInput input)
     {
         var payments = await _paymentsRepository.GetAllPayments(authId);
 

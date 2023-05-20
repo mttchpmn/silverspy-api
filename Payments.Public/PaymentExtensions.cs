@@ -38,6 +38,22 @@ public static class PaymentExtensions
         };
     }
 
+    public static IEnumerable<PaymentInstance> ToPaymentInstances(this Payment payment, DateTime startDate,
+        DateTime endDate)
+    {
+        var dates = payment.GenerateDates(startDate, endDate);
+
+        var instances = dates.Select(x =>
+            new PaymentInstance(x, payment.Type, payment.Name, payment.Category, payment.Details, payment.Value));
+
+        return instances;
+    }
+
+    public static ApiPaymentInstance ToApiPaymentInstance(this PaymentInstance paymentInstance)
+        => new(paymentInstance.PaymentDate.ToUniversalTime().ToString("O"),
+            paymentInstance.Type.ToString().ToUpper(), paymentInstance.Name,
+            paymentInstance.Category, paymentInstance.Details, paymentInstance.Value);
+
     public static PaymentWithDates ToPaymentWIthDates(this Payment payment, DateTime startDate, DateTime endDate)
     {
         var dates = payment.GenerateDates(startDate, endDate);
@@ -48,7 +64,7 @@ public static class PaymentExtensions
     public static ApiPayment ToApiPayment(this Payment payment)
         => new(
             payment.Id,
-            payment.Name, payment.ReferenceDate.ToString(CultureInfo.InvariantCulture), payment.Type.ToString(),
+            payment.Name, payment.ReferenceDate.ToUniversalTime().ToString("O"), payment.Type.ToString(),
             payment.Frequency.ToString(),
             payment.Category, payment.Details, payment.Value);
 }

@@ -1,6 +1,6 @@
 ﻿namespace Payments.Public;
 
-public record GetPaymentsSummaryInput(
+public record GetPaymentForecastInput(
     DateTime StartDate,
     DateTime EndDate
 );

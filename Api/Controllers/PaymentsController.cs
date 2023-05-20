@@ -49,18 +49,18 @@ public class PaymentsController : ControllerBase
     }
 
     [HttpPost]
-    [Route("summary")]
-    public async Task<IActionResult> GetPaymentSummary(GetPaymentsSummaryInput input)
+    [Route("forecast")]
+    public async Task<IActionResult> GetPaymentForecast(GetPaymentForecastInput input)
     {
         var authId = GetAuthId();
-        var result = await _paymentsService.GetPaymentsSummary(authId, input);
+        var result = await _paymentsService.GetPaymentForecast(authId, input);
 
         return Ok(result);
     }
 
     [HttpPost]
     [Route("period")]
-    public async Task<IActionResult> GetPaymentPeriod(GetPaymentsSummaryInput input)
+    public async Task<IActionResult> GetPaymentPeriod(GetPaymentForecastInput input)
     {
         var authId = GetAuthId();
         var result = await _paymentsService.GetPaymentsPeriod(authId, input);
