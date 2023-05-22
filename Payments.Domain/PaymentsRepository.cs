@@ -25,7 +25,8 @@ public class PaymentsRepository : IPaymentsRepository
                      value,
                      name,
                      category,
-                     details
+                     details,
+                     end_date
                      ) 
                  VALUES (
                     @AuthId,
@@ -35,7 +36,8 @@ public class PaymentsRepository : IPaymentsRepository
                     @Value,
                     @Name,
                     @Category,
-                    @Details
+                    @Details,
+                    @EndDate
                     )
                 RETURNING id";
 
@@ -48,7 +50,8 @@ public class PaymentsRepository : IPaymentsRepository
             input.Value,
             input.Name,
             input.Category,
-            input.Details
+            input.Details,
+            input.EndDate
         });
 
         var payment = await GetPaymentById(authId, paymentId);
@@ -105,7 +108,7 @@ public class PaymentsRepository : IPaymentsRepository
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
-        var sql = "SELECT id, auth_id, reference_date, type, frequency, value, name, category, details FROM payment WHERE auth_id = @AuthId";
+        var sql = "SELECT id, auth_id, reference_date, type, frequency, value, name, category, details, end_date FROM payment WHERE auth_id = @AuthId";
 
         var payments =
             (await connection.QueryAsync<PaymentRecord>(sql,
@@ -118,7 +121,7 @@ public class PaymentsRepository : IPaymentsRepository
     {
         await using var connection = await _databaseConnectionFactory.GetConnection();
 
-        var sql = "SELECT id, auth_id, reference_date, type, frequency, value, name, category, details FROM payment WHERE id = @PaymentId AND auth_id = @AuthId";
+        var sql = "SELECT id, auth_id, reference_date, type, frequency, value, name, category, details, end_date FROM payment WHERE id = @PaymentId AND auth_id = @AuthId";
 
         var payment =
             await connection.QuerySingleOrDefaultAsync<PaymentRecord>(sql,
@@ -138,11 +141,13 @@ internal record PaymentRecord
         decimal value,
         string name,
         string category,
-        string details)
+        string details,
+        DateTime? end_date)
     {
         this.id = id;
         this.auth_id = auth_id;
         this.reference_date = reference_date;
+        this.end_date = end_date;
         this.type = type;
         this.frequency = frequency;
         this.value = value;
@@ -154,6 +159,7 @@ internal record PaymentRecord
     public int id { get; init; }
     public string auth_id { get; init; }
     public DateTime reference_date { get; init; }
+    public DateTime? end_date { get; init; }
     public PaymentType type { get; init; }
     public PaymentFrequency frequency { get; init; }
     public decimal value { get; init; }
@@ -162,5 +168,5 @@ internal record PaymentRecord
     public string details { get; init; }
 
     public Payment ToPayment() =>
-        new Payment(id, auth_id, reference_date, type, frequency, name, category, details, value);
+        new Payment(id, auth_id, reference_date, type, frequency, name, category, details, value, end_date);
 }

@@ -9,7 +9,7 @@ public static class PaymentExtensions
         var result = new List<DateTime>();
         var referenceDate = payment.ReferenceDate;
 
-        while (referenceDate < endDate)
+        while (!(referenceDate > endDate) && (payment.EndDate == null || referenceDate < payment.EndDate))
         {
             result.Add(referenceDate);
 

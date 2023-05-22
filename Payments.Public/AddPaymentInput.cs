@@ -7,7 +7,8 @@ public record ApiAddPaymentInput(
     string Name,
     string Category,
     string Details,
-    decimal Value
+    decimal Value,
+    string EndDate
 );
 
 public record ApiImportPaymentsInput(
@@ -22,7 +23,8 @@ public record ApiUpdatePaymentInput(
     string Name,
     string Category,
     string Details,
-    decimal Value
+    decimal Value,
+    string EndDate
 );
 
 public static class PaymentInputExtensions
@@ -30,19 +32,22 @@ public static class PaymentInputExtensions
     public static AddPaymentInput ToAddPaymentInput(this ApiAddPaymentInput input)
     {
         var date = DateTime.Parse(input.ReferenceDate);
+        var endDate = !string.IsNullOrWhiteSpace(input.EndDate) ? DateTime.Parse(input.EndDate) : (DateTime?) null;
         var type = Enum.Parse<PaymentType>(input.Type, true);
         var freq = Enum.Parse<PaymentFrequency>(input.Frequency, true);
 
-        return new AddPaymentInput(date, type, freq, input.Name, input.Category, input.Details, input.Value);
+        return new AddPaymentInput(date, type, freq, input.Name, input.Category, input.Details, input.Value, endDate);
     }
-    
+
     public static UpdatePaymentInput ToUpdatePaymentInput(this ApiUpdatePaymentInput input)
     {
         var date = DateTime.Parse(input.ReferenceDate);
+        var endDate = !string.IsNullOrWhiteSpace(input.EndDate) ? DateTime.Parse(input.EndDate) : (DateTime?) null;
         var type = Enum.Parse<PaymentType>(input.Type, true);
         var freq = Enum.Parse<PaymentFrequency>(input.Frequency, true);
 
-        return new UpdatePaymentInput(input.Id, date, type, freq, input.Name, input.Category, input.Details, input.Value);
+        return new UpdatePaymentInput(input.Id, date, type, freq, input.Name, input.Category, input.Details,
+            input.Value, endDate);
     }
 }
 
@@ -53,7 +58,8 @@ public record AddPaymentInput(
     string Name,
     string Category,
     string Details,
-    decimal Value
+    decimal Value,
+    DateTime? EndDate
 );
 
 public record UpdatePaymentInput(
@@ -64,10 +70,12 @@ public record UpdatePaymentInput(
     string Name,
     string Category,
     string Details,
-    decimal Value) : AddPaymentInput(ReferenceDate,
+    decimal Value,
+    DateTime? EndDate) : AddPaymentInput(ReferenceDate,
     Type,
     Frequency,
     Name,
     Category,
     Details,
-    Value);
+    Value, 
+    EndDate);

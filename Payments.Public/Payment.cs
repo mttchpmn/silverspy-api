@@ -9,7 +9,8 @@ public record Payment(
     string Name,
     string Category,
     string Details,
-    decimal Value
+    decimal Value,
+    DateTime? EndDate = null
 );
 
 public record PaymentWithDate : Payment
